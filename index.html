@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SwiftBit Quest</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 { font-size: 24px; margin-bottom: 10px; color: #fbbf24; text-shadow: 0 0 10px rgba(251, 191, 36, 0.5); }
+        .score-container { font-size: 48px; font-weight: bold; margin-bottom: 30px; }
+        .tap-btn {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            border: 8px solid rgba(251, 191, 36, 0.3);
+            background: radial-gradient(circle, #fbbf24, #d97706);
+            cursor: pointer;
+            box-shadow: 0 0 40px rgba(217, 119, 6, 0.6);
+            transition: transform 0.1s ease;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .tap-btn:active { transform: scale(0.92); box-shadow: 0 0 20px rgba(217, 119, 6, 0.8); }
+        .hint { margin-top: 20px; font-size: 14px; opacity: 0.7; }
+    </style>
+</head>
+<body>
+    <h1>SWIFBIT QUEST</h1>
+    <div class="score-container" id="score">0</div>
+    <div>
+        <button class="tap-btn" onclick="tap()">
+            <span style="font-size: 80px;">ðŸª™</span>
+        </button>
+    </div>
+    <p class="hint">Tap koin untuk mengumpulkan poin!</p>
+
+    <script>
+        let count = 0;
+        const scoreDisplay = document.getElementById('score');
+        const webapp = window.Telegram.WebApp;
+
+        // Beritahu Telegram kalau aplikasi siap
+        webapp.ready();
+        webapp.expand(); // Membuka aplikasi secara layar penuh
+
+        function tap() {
+            count++;
+            scoreDisplay.innerText = count;
+            
+            // Efek getar saat tap (Haptic Feedback)
+            if (webapp.HapticFeedback) {
+                webapp.HapticFeedback.impactOccurred('medium');
+            }
+        }
+    </script>
+</body>
+</html>

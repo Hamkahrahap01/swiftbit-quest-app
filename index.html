@@ -27,7 +27,7 @@
     </div>
 
     <div class="coin-container" id="game-area">
-        <img id="coin" src="https://i.ibb.co/L6vMvP9/gold-coin.png" alt="Coin">
+        <img id="coin" src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Gold%20Coin.png" alt="Coin">
     </div>
 
     <div style="margin-bottom: 10px;">⚡ Energi: <span id="energy-text">100</span>/100</div>
@@ -42,7 +42,6 @@
         let energy = 100;
         const maxEnergy = 100;
 
-        // Ambil Data dari Telegram Cloud Storage
         tg.CloudStorage.getItems(['score', 'level'], (err, values) => {
             if (!err) {
                 if (values.score) score = parseInt(values.score);
@@ -58,7 +57,6 @@
             document.getElementById('energy-inner').style.width = (energy / maxEnergy * 100) + "%";
         }
 
-        // Auto-Regenerasi Energi per Detik
         setInterval(() => {
             if (energy < maxEnergy) {
                 energy = Math.min(maxEnergy, energy + 0.4);
@@ -70,9 +68,8 @@
             if (energy >= 1) {
                 score++;
                 energy -= 1;
-                level = Math.floor(score / 150) + 1; // Naik level setiap 150 koin
+                level = Math.floor(score / 150) + 1;
 
-                // Efek Angka Melayang
                 const text = document.createElement('div');
                 text.innerText = "+1";
                 text.className = 'floating-text';
@@ -81,17 +78,14 @@
                 document.getElementById('game-area').appendChild(text);
                 setTimeout(() => text.remove(), 800);
 
-                // Efek Getar
                 tg.HapticFeedback.impactOccurred('medium');
                 updateDisplay();
 
-                // Simpan Skor Otomatis ke Cloud setiap 10 tap
                 if (score % 10 === 0) {
                     tg.CloudStorage.setItem('score', score.toString());
                     tg.CloudStorage.setItem('level', level.toString());
                 }
             } else {
-                // Getar Error jika Energi Habis
                 tg.HapticFeedback.notificationOccurred('error');
             }
         };

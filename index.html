@@ -3,67 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SwiftBit Quest</title>
+    <title>SwiftBit Quest PRO</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body {
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            color: white;
-            text-align: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            height: 100vh;
-        }
-        h1 { font-size: 24px; margin-bottom: 10px; color: #fbbf24; text-shadow: 0 0 10px rgba(251, 191, 36, 0.5); }
-        .score-container { font-size: 48px; font-weight: bold; margin-bottom: 30px; }
-        .tap-btn {
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
-            border: 8px solid rgba(251, 191, 36, 0.3);
-            background: radial-gradient(circle, #fbbf24, #d97706);
-            cursor: pointer;
-            box-shadow: 0 0 40px rgba(217, 119, 6, 0.6);
-            transition: transform 0.1s ease;
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .tap-btn:active { transform: scale(0.92); box-shadow: 0 0 20px rgba(217, 119, 6, 0.8); }
-        .hint { margin-top: 20px; font-size: 14px; opacity: 0.7; }
+        body { background: radial-gradient(circle, #001d3d 0%, #000814 100%); color: white; text-align: center; font-family: 'Segoe UI', sans-serif; overflow: hidden; margin: 0; user-select: none; }
+        #header { padding: 20px; display: flex; justify-content: space-around; background: rgba(255,255,255,0.05); }
+        .stat-box { background: rgba(0,0,0,0.5); padding: 10px 20px; border-radius: 15px; border: 1px solid #ffc300; min-width: 80px; }
+        #score { font-size: 28px; font-weight: bold; color: #ffc300; }
+        #level { color: #00f5d4; font-weight: bold; }
+        .coin-container { position: relative; height: 55vh; display: flex; align-items: center; justify-content: center; }
+        #coin { width: 220px; filter: drop-shadow(0 0 20px #ffc300); cursor: pointer; transition: transform 0.05s; z-index: 10; }
+        #coin:active { transform: scale(0.92); }
+        .energy-bar-container { width: 80%; height: 20px; background: #333; margin: 0 auto; border-radius: 10px; border: 2px solid #fff; overflow: hidden; }
+        #energy-inner { width: 100%; height: 100%; background: linear-gradient(90deg, #ff0054, #ffbd00); transition: width 0.3s; }
+        .floating-text { position: absolute; color: #ffc300; font-weight: bold; pointer-events: none; animation: floatUp 0.8s ease-out forwards; font-size: 24px; }
+        @keyframes floatUp { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-100px); opacity: 0; } }
     </style>
 </head>
 <body>
-    <h1>SWIFBIT QUEST</h1>
-    <div class="score-container" id="score">0</div>
-    <div>
-        <button class="tap-btn" onclick="tap()">
-            <span style="font-size: 80px;">ðŸª™</span>
-        </button>
+    <div id="header">
+        <div class="stat-box">💰 <span id="score">0</span></div>
+        <div class="stat-box">⭐ Level: <span id="level">1</span></div>
     </div>
-    <p class="hint">Tap koin untuk mengumpulkan poin!</p>
+
+    <div class="coin-container" id="game-area">
+        <img id="coin" src="https://i.ibb.co/L6vMvP9/gold-coin.png" alt="Coin">
+    </div>
+
+    <div style="margin-bottom: 10px;">⚡ Energi: <span id="energy-text">100</span>/100</div>
+    <div class="energy-bar-container"><div id="energy-inner"></div></div>
 
     <script>
-        let count = 0;
-        const scoreDisplay = document.getElementById('score');
-        const webapp = window.Telegram.WebApp;
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        
+        let score = 0;
+        let level = 1;
+        let energy = 100;
+        const maxEnergy = 100;
 
-        // Beritahu Telegram kalau aplikasi siap
-        webapp.ready();
-        webapp.expand(); // Membuka aplikasi secara layar penuh
-
-        function tap() {
-            count++;
-            scoreDisplay.innerText = count;
-            
-            // Efek getar saat tap (Haptic Feedback)
-            if (webapp.HapticFeedback) {
-                webapp.HapticFeedback.impactOccurred('medium');
+        // Ambil Data dari Telegram Cloud Storage
+        tg.CloudStorage.getItems(['score', 'level'], (err, values) => {
+            if (!err) {
+                if (values.score) score = parseInt(values.score);
+                if (values.level) level = parseInt(values.level);
+                updateDisplay();
             }
+        });
+
+        function updateDisplay() {
+            document.getElementById('score').innerText = score.toLocaleString();
+            document.getElementById('level').innerText = level;
+            document.getElementById('energy-text').innerText = Math.floor(energy);
+            document.getElementById('energy-inner').style.width = (energy / maxEnergy * 100) + "%";
         }
+
+        // Auto-Regenerasi Energi per Detik
+        setInterval(() => {
+            if (energy < maxEnergy) {
+                energy = Math.min(maxEnergy, energy + 0.4);
+                updateDisplay();
+            }
+        }, 1000);
+
+        document.getElementById('coin').onclick = (e) => {
+            if (energy >= 1) {
+                score++;
+                energy -= 1;
+                level = Math.floor(score / 150) + 1; // Naik level setiap 150 koin
+
+                // Efek Angka Melayang
+                const text = document.createElement('div');
+                text.innerText = "+1";
+                text.className = 'floating-text';
+                text.style.left = e.pageX + "px";
+                text.style.top = e.pageY + "px";
+                document.getElementById('game-area').appendChild(text);
+                setTimeout(() => text.remove(), 800);
+
+                // Efek Getar
+                tg.HapticFeedback.impactOccurred('medium');
+                updateDisplay();
+
+                // Simpan Skor Otomatis ke Cloud setiap 10 tap
+                if (score % 10 === 0) {
+                    tg.CloudStorage.setItem('score', score.toString());
+                    tg.CloudStorage.setItem('level', level.toString());
+                }
+            } else {
+                // Getar Error jika Energi Habis
+                tg.HapticFeedback.notificationOccurred('error');
+            }
+        };
     </script>
 </body>
 </html>

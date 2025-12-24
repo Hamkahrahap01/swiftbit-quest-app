@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="monetag" content="e8f98fea0168e07f6abb170da4f2d7d0">
+    
     <script src='//libtl.com/sdk.js' data-zone='10367286' data-sdk='show_10367286'></script>
+    
     <title>SwiftBit Quest PRO</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
@@ -14,9 +16,11 @@
         #score { font-size: 28px; font-weight: bold; color: #ffc300; }
         #level { color: #00f5d4; font-weight: bold; }
         .coin-container { position: relative; height: 50vh; display: flex; align-items: center; justify-content: center; }
-        /* DESAIN KOIN EMAS SVG AGAR TIDAK MUNGKIN PECAH */
-        #coin { width: 200px; height: 200px; cursor: pointer; transition: transform 0.05s; filter: drop-shadow(0 0 20px #ffc300); }
+        
+        /* KOIN EMAS SVG STABIL */
+        #coin { width: 220px; height: 220px; cursor: pointer; transition: transform 0.05s; filter: drop-shadow(0 0 25px #ffc300); }
         #coin:active { transform: scale(0.92); }
+        
         .energy-bar-container { width: 80%; height: 20px; background: #333; margin: 20px auto; border-radius: 10px; border: 2px solid #fff; overflow: hidden; }
         #energy-inner { width: 100%; height: 100%; background: linear-gradient(90deg, #ff0054, #ffbd00); transition: width 0.3s; }
         .floating-text { position: absolute; color: #ffc300; font-weight: bold; pointer-events: none; animation: floatUp 0.8s ease-out forwards; font-size: 24px; }
@@ -28,19 +32,31 @@
         <div class="stat-box">💰 <span id="score">0</span></div>
         <div class="stat-box">⭐ Level: <span id="level">1</span></div>
     </div>
+
     <div class="coin-container" id="game-area">
         <svg id="coin" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="45" fill="#ffc300" stroke="#e3b200" stroke-width="5"/>
-            <text x="50%" y="65%" text-anchor="middle" fill="#e3b200" font-size="50" font-weight="bold" font-family="Arial">$</text>
+            <defs>
+                <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#ffeb3b;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#f9a825;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <circle cx="50" cy="50" r="45" fill="url(#goldGrad)" stroke="#e3b200" stroke-width="4"/>
+            <circle cx="50" cy="50" r="35" fill="none" stroke="#e3b200" stroke-width="2" stroke-dasharray="4"/>
+            <text x="50" y="68" text-anchor="middle" fill="#bf8f00" font-size="50" font-weight="bold" font-family="Arial">$</text>
         </svg>
     </div>
+
     <div style="margin-bottom: 5px;">⚡ Energi: <span id="energy-text">100</span>/100</div>
     <div class="energy-bar-container"><div id="energy-inner"></div></div>
+
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
+        
         let score = 0, level = 1, energy = 100;
 
+        // Ambil Data dari Cloud Storage
         tg.CloudStorage.getItems(['score', 'level'], (err, values) => {
             if (!err) {
                 score = parseInt(values.score || 0);
@@ -56,37 +72,54 @@
             document.getElementById('energy-inner').style.width = energy + "%";
         }
 
-        setInterval(() => { if (energy < 100) { energy = Math.min(100, energy + 0.5); updateDisplay(); } }, 1000);
+        // Auto Regen Energi
+        setInterval(() => { 
+            if (energy < 100) { 
+                energy = Math.min(100, energy + 0.5); 
+                updateDisplay(); 
+            } 
+        }, 1000);
 
+        // FUNGSI PANGGIL IKLAN MONETAG
         function showAdForEnergy() {
-            // Memastikan fungsi SDK Monetag tersedia
             if (typeof show_10367286 === 'function') {
                 show_10367286().then(() => {
-                    energy = 100; updateDisplay();
-                    tg.showAlert("Selamat! Energi Anda kembali penuh.");
-                }).catch(err => { 
-                    tg.showAlert("Iklan belum siap dimuat. Silakan coba 5 detik lagi."); 
+                    energy = 100; 
+                    updateDisplay();
+                    tg.showAlert("ENERGI PENUH! Silakan lanjut menambang.");
+                }).catch(() => {
+                    tg.showAlert("Iklan gagal dimuat. Coba matikan AdBlock atau ganti koneksi.");
                 });
             } else {
-                tg.showAlert("Sedang menghubungkan ke server iklan... Pastikan internet stabil.");
+                tg.showAlert("Sistem iklan sedang inisialisasi. Tunggu 5 detik.");
             }
         }
 
         document.getElementById('coin').onclick = (e) => {
             if (energy >= 1) {
-                score++; energy--; level = Math.floor(score / 150) + 1;
+                score++; energy--; 
+                level = Math.floor(score / 150) + 1;
+                
+                // Efek Angka Melayang
                 const text = document.createElement('div');
                 text.innerText = "+1"; text.className = 'floating-text';
                 text.style.left = e.pageX + "px"; text.style.top = e.pageY + "px";
                 document.getElementById('game-area').appendChild(text);
                 setTimeout(() => text.remove(), 800);
-                tg.HapticFeedback.impactOccurred('medium'); updateDisplay();
+
+                tg.HapticFeedback.impactOccurred('medium'); 
+                updateDisplay();
+
+                // Simpan Skor secara berkala
                 if (score % 5 === 0) {
                     tg.CloudStorage.setItem('score', score.toString());
                     tg.CloudStorage.setItem('level', level.toString());
                 }
             } else {
-                tg.showConfirm("Energi habis! Tonton iklan untuk isi penuh?", (ok) => { if (ok) showAdForEnergy(); });
+                tg.HapticFeedback.notificationOccurred('error');
+                tg.showConfirm("Energi habis! Mau isi penuh gratis dengan nonton iklan?", (ok) => {
+                    if (ok) showAdForEnergy();
+                });
             }
         };
     </script>

@@ -6,7 +6,7 @@
     
     <meta name="monetag" content="2febe9684aeb35ed08670750a3716f05">
     
-    <script src="https://quge5.com/88/tag.min.js" data-zone="195898" async data-cfasync="false"></script>
+    <script src='//libtl.com/sdk.js' data-zone='10367286' data-sdk='show_10367286'></script>
     
     <title>SwiftBit Quest PRO</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -71,15 +71,17 @@
         setInterval(() => { if (energy < 100) { energy = Math.min(100, energy + 0.5); updateDisplay(); } }, 1000);
 
         function showAdForEnergy() {
-            // Karena ini OnClick (Popunder), iklan akan terpicu otomatis saat user melakukan tap
-            // Kita berikan energi penuh sebagai hadiah interaksi
-            energy = 100; 
-            updateDisplay();
-            tg.showAlert("ENERGI DIPULIHKAN! Selamat bermain kembali.");
-            
-            // Membuka link iklan secara manual jika SDK mendukung
-            if(window.open) {
-                console.log("Menyiapkan penayangan iklan...");
+            // Pemanggilan Fungsi SDK data-sdk='show_10367286'
+            if (typeof show_10367286 === 'function') {
+                show_10367286().then(() => {
+                    energy = 100;
+                    updateDisplay();
+                    tg.showAlert("HADIAH DITERIMA! Energi penuh.");
+                }).catch(() => {
+                    tg.showAlert("Gagal memuat iklan. Periksa koneksi atau matikan DNS.");
+                });
+            } else {
+                tg.showAlert("Menunggu respon server iklan...");
             }
         }
 
@@ -97,7 +99,7 @@
                     tg.CloudStorage.setItem('level', level.toString());
                 }
             } else {
-                tg.showConfirm("Energi habis! Tonton iklan/klik untuk isi penuh?", (ok) => { if (ok) showAdForEnergy(); });
+                tg.showConfirm("Energi habis! Tonton iklan untuk isi?", (ok) => { if (ok) showAdForEnergy(); });
             }
         };
     </script>

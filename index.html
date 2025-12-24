@@ -32,7 +32,7 @@
     </div>
 
     <div class="coin-container" id="game-area">
-        <img id="coin" src="https://api.dicebear.com/7.x/icons/svg?seed=gold&icon=coin" alt="Coin">
+        <img id="coin" src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Gold%20Coin.png" alt="Coin">
     </div>
 
     <div style="margin-bottom: 10px;">⚡ Energi: <span id="energy-text">100</span>/100</div>
@@ -46,6 +46,7 @@
         let level = 1;
         let energy = 100;
 
+        // Load Data
         tg.CloudStorage.getItems(['score', 'level'], (err, values) => {
             if (!err) {
                 if (values.score) score = parseInt(values.score);
@@ -61,6 +62,7 @@
             document.getElementById('energy-inner').style.width = (energy / 100 * 100) + "%";
         }
 
+        // Auto Regen Energi
         setInterval(() => {
             if (energy < 100) {
                 energy = Math.min(100, energy + 0.4);
@@ -68,14 +70,20 @@
             }
         }, 1000);
 
+        // FUNGSI IKLAN MONETAG
         function showAdForEnergy() {
-            show_10367286().then(() => {
-                energy = 100;
-                updateDisplay();
-                tg.showAlert("Hebat! Energi Anda telah terisi penuh kembali.");
-            }).catch(e => {
-                tg.showAlert("Iklan belum siap, silakan coba lagi nanti.");
-            });
+            if (typeof show_10367286 === 'function') {
+                show_10367286().then(() => {
+                    energy = 100; // Isi penuh
+                    updateDisplay();
+                    tg.showAlert("Berhasil! Energi Anda kini terisi penuh.");
+                }).catch(e => {
+                    tg.showAlert("Iklan sedang bersiap. Tunggu sebentar lagi.");
+                    console.log("Ad Error:", e);
+                });
+            } else {
+                tg.showAlert("Sistem iklan sedang dimuat. Mohon tunggu 10 detik lagi.");
+            }
         }
 
         document.getElementById('coin').onclick = (e) => {
@@ -84,6 +92,7 @@
                 energy -= 1;
                 level = Math.floor(score / 150) + 1;
 
+                // Animasi Tap
                 const text = document.createElement('div');
                 text.innerText = "+1";
                 text.className = 'floating-text';
@@ -95,13 +104,14 @@
                 tg.HapticFeedback.impactOccurred('medium');
                 updateDisplay();
 
+                // Simpan tiap 10 tap
                 if (score % 10 === 0) {
                     tg.CloudStorage.setItem('score', score.toString());
                     tg.CloudStorage.setItem('level', level.toString());
                 }
             } else {
                 tg.HapticFeedback.notificationOccurred('error');
-                tg.showConfirm("Energi habis! Tonton iklan untuk isi penuh energi?", (ok) => {
+                tg.showConfirm("Energi habis! Tonton iklan untuk isi penuh energi secara instan?", (ok) => {
                     if (ok) showAdForEnergy();
                 });
             }

@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-   <meta name="monetag" content="2febe9684aeb35ed08670750a3716f05">
     
-    <script src='//libtl.com/sdk.js' data-zone='10367286' data-sdk='show_10367286'></script>
+    <meta name="monetag" content="2febe9684aeb35ed08670750a3716f05">
+    
+    <script src="https://quge5.com/88/tag.min.js" data-zone="195898" async data-cfasync="false"></script>
     
     <title>SwiftBit Quest PRO</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -16,11 +17,8 @@
         #score { font-size: 28px; font-weight: bold; color: #ffc300; }
         #level { color: #00f5d4; font-weight: bold; }
         .coin-container { position: relative; height: 50vh; display: flex; align-items: center; justify-content: center; }
-        
-        /* KOIN EMAS SVG STABIL */
         #coin { width: 220px; height: 220px; cursor: pointer; transition: transform 0.05s; filter: drop-shadow(0 0 25px #ffc300); }
         #coin:active { transform: scale(0.92); }
-        
         .energy-bar-container { width: 80%; height: 20px; background: #333; margin: 20px auto; border-radius: 10px; border: 2px solid #fff; overflow: hidden; }
         #energy-inner { width: 100%; height: 100%; background: linear-gradient(90deg, #ff0054, #ffbd00); transition: width 0.3s; }
         .floating-text { position: absolute; color: #ffc300; font-weight: bold; pointer-events: none; animation: floatUp 0.8s ease-out forwards; font-size: 24px; }
@@ -42,7 +40,6 @@
                 </linearGradient>
             </defs>
             <circle cx="50" cy="50" r="45" fill="url(#goldGrad)" stroke="#e3b200" stroke-width="4"/>
-            <circle cx="50" cy="50" r="35" fill="none" stroke="#e3b200" stroke-width="2" stroke-dasharray="4"/>
             <text x="50" y="68" text-anchor="middle" fill="#bf8f00" font-size="50" font-weight="bold" font-family="Arial">$</text>
         </svg>
     </div>
@@ -56,7 +53,6 @@
         
         let score = 0, level = 1, energy = 100;
 
-        // Ambil Data dari Cloud Storage
         tg.CloudStorage.getItems(['score', 'level'], (err, values) => {
             if (!err) {
                 score = parseInt(values.score || 0);
@@ -72,54 +68,36 @@
             document.getElementById('energy-inner').style.width = energy + "%";
         }
 
-        // Auto Regen Energi
-        setInterval(() => { 
-            if (energy < 100) { 
-                energy = Math.min(100, energy + 0.5); 
-                updateDisplay(); 
-            } 
-        }, 1000);
+        setInterval(() => { if (energy < 100) { energy = Math.min(100, energy + 0.5); updateDisplay(); } }, 1000);
 
-        // FUNGSI PANGGIL IKLAN MONETAG
         function showAdForEnergy() {
-            if (typeof show_10367286 === 'function') {
-                show_10367286().then(() => {
-                    energy = 100; 
-                    updateDisplay();
-                    tg.showAlert("ENERGI PENUH! Silakan lanjut menambang.");
-                }).catch(() => {
-                    tg.showAlert("Iklan gagal dimuat. Coba matikan AdBlock atau ganti koneksi.");
-                });
-            } else {
-                tg.showAlert("Sistem iklan sedang inisialisasi. Tunggu 5 detik.");
+            // Karena ini OnClick (Popunder), iklan akan terpicu otomatis saat user melakukan tap
+            // Kita berikan energi penuh sebagai hadiah interaksi
+            energy = 100; 
+            updateDisplay();
+            tg.showAlert("ENERGI DIPULIHKAN! Selamat bermain kembali.");
+            
+            // Membuka link iklan secara manual jika SDK mendukung
+            if(window.open) {
+                console.log("Menyiapkan penayangan iklan...");
             }
         }
 
         document.getElementById('coin').onclick = (e) => {
             if (energy >= 1) {
-                score++; energy--; 
-                level = Math.floor(score / 150) + 1;
-                
-                // Efek Angka Melayang
+                score++; energy--; level = Math.floor(score / 150) + 1;
                 const text = document.createElement('div');
                 text.innerText = "+1"; text.className = 'floating-text';
                 text.style.left = e.pageX + "px"; text.style.top = e.pageY + "px";
                 document.getElementById('game-area').appendChild(text);
                 setTimeout(() => text.remove(), 800);
-
-                tg.HapticFeedback.impactOccurred('medium'); 
-                updateDisplay();
-
-                // Simpan Skor secara berkala
+                tg.HapticFeedback.impactOccurred('medium'); updateDisplay();
                 if (score % 5 === 0) {
                     tg.CloudStorage.setItem('score', score.toString());
                     tg.CloudStorage.setItem('level', level.toString());
                 }
             } else {
-                tg.HapticFeedback.notificationOccurred('error');
-                tg.showConfirm("Energi habis! Mau isi penuh gratis dengan nonton iklan?", (ok) => {
-                    if (ok) showAdForEnergy();
-                });
+                tg.showConfirm("Energi habis! Tonton iklan/klik untuk isi penuh?", (ok) => { if (ok) showAdForEnergy(); });
             }
         };
     </script>

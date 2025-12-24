@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
     <meta name="monetag" content="e8f98fea0168e07f6abb170da4f2d7d0">
-
     <script src='//libtl.com/sdk.js' data-zone='10367286' data-sdk='show_10367286'></script>
-    
     <title>SwiftBit Quest PRO</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
@@ -16,10 +13,11 @@
         .stat-box { background: rgba(0,0,0,0.5); padding: 10px 20px; border-radius: 15px; border: 1px solid #ffc300; min-width: 80px; }
         #score { font-size: 28px; font-weight: bold; color: #ffc300; }
         #level { color: #00f5d4; font-weight: bold; }
-        .coin-container { position: relative; height: 55vh; display: flex; align-items: center; justify-content: center; }
-        #coin { width: 220px; filter: drop-shadow(0 0 20px #ffc300); cursor: pointer; transition: transform 0.05s; z-index: 10; }
+        .coin-container { position: relative; height: 50vh; display: flex; align-items: center; justify-content: center; }
+        /* KOIN MENGGUNAKAN DIV AGAR STABIL */
+        #coin { width: 200px; height: 200px; background: #ffc300; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 100px; border: 10px solid #e3b200; box-shadow: 0 0 30px #ffc300; cursor: pointer; transition: transform 0.05s; }
         #coin:active { transform: scale(0.92); }
-        .energy-bar-container { width: 80%; height: 20px; background: #333; margin: 0 auto; border-radius: 10px; border: 2px solid #fff; overflow: hidden; }
+        .energy-bar-container { width: 80%; height: 20px; background: #333; margin: 20px auto; border-radius: 10px; border: 2px solid #fff; overflow: hidden; }
         #energy-inner { width: 100%; height: 100%; background: linear-gradient(90deg, #ff0054, #ffbd00); transition: width 0.3s; }
         .floating-text { position: absolute; color: #ffc300; font-weight: bold; pointer-events: none; animation: floatUp 0.8s ease-out forwards; font-size: 24px; }
         @keyframes floatUp { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-100px); opacity: 0; } }
@@ -30,27 +28,20 @@
         <div class="stat-box">💰 <span id="score">0</span></div>
         <div class="stat-box">⭐ Level: <span id="level">1</span></div>
     </div>
-
     <div class="coin-container" id="game-area">
-        <img id="coin" src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Gold%20Coin.png" alt="Coin">
+        <div id="coin">₿</div>
     </div>
-
-    <div style="margin-bottom: 10px;">⚡ Energi: <span id="energy-text">100</span>/100</div>
+    <div style="margin-bottom: 5px;">⚡ Energi: <span id="energy-text">100</span>/100</div>
     <div class="energy-bar-container"><div id="energy-inner"></div></div>
-
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-        
-        let score = 0;
-        let level = 1;
-        let energy = 100;
+        let score = 0, level = 1, energy = 100;
 
-        // Load Data
         tg.CloudStorage.getItems(['score', 'level'], (err, values) => {
             if (!err) {
-                if (values.score) score = parseInt(values.score);
-                if (values.level) level = parseInt(values.level);
+                score = parseInt(values.score || 0);
+                level = parseInt(values.level || 1);
                 updateDisplay();
             }
         });
@@ -59,61 +50,35 @@
             document.getElementById('score').innerText = score.toLocaleString();
             document.getElementById('level').innerText = level;
             document.getElementById('energy-text').innerText = Math.floor(energy);
-            document.getElementById('energy-inner').style.width = (energy / 100 * 100) + "%";
+            document.getElementById('energy-inner').style.width = energy + "%";
         }
 
-        // Auto Regen Energi
-        setInterval(() => {
-            if (energy < 100) {
-                energy = Math.min(100, energy + 0.4);
-                updateDisplay();
-            }
-        }, 1000);
+        setInterval(() => { if (energy < 100) { energy = Math.min(100, energy + 0.5); updateDisplay(); } }, 1000);
 
-        // FUNGSI IKLAN MONETAG
         function showAdForEnergy() {
             if (typeof show_10367286 === 'function') {
                 show_10367286().then(() => {
-                    energy = 100; // Isi penuh
-                    updateDisplay();
-                    tg.showAlert("Berhasil! Energi Anda kini terisi penuh.");
-                }).catch(e => {
-                    tg.showAlert("Iklan sedang bersiap. Tunggu sebentar lagi.");
-                    console.log("Ad Error:", e);
-                });
-            } else {
-                tg.showAlert("Sistem iklan sedang dimuat. Mohon tunggu 10 detik lagi.");
-            }
+                    energy = 100; updateDisplay();
+                    tg.showAlert("Energi Terisi Penuh!");
+                }).catch(() => { tg.showAlert("Iklan sedang bersiap..."); });
+            } else { tg.showAlert("Menghubungkan ke server iklan..."); }
         }
 
         document.getElementById('coin').onclick = (e) => {
             if (energy >= 1) {
-                score++;
-                energy -= 1;
-                level = Math.floor(score / 150) + 1;
-
-                // Animasi Tap
+                score++; energy--; level = Math.floor(score / 150) + 1;
                 const text = document.createElement('div');
-                text.innerText = "+1";
-                text.className = 'floating-text';
-                text.style.left = e.pageX + "px";
-                text.style.top = e.pageY + "px";
+                text.innerText = "+1"; text.className = 'floating-text';
+                text.style.left = e.pageX + "px"; text.style.top = e.pageY + "px";
                 document.getElementById('game-area').appendChild(text);
                 setTimeout(() => text.remove(), 800);
-
-                tg.HapticFeedback.impactOccurred('medium');
-                updateDisplay();
-
-                // Simpan tiap 10 tap
-                if (score % 10 === 0) {
+                tg.HapticFeedback.impactOccurred('medium'); updateDisplay();
+                if (score % 5 === 0) {
                     tg.CloudStorage.setItem('score', score.toString());
                     tg.CloudStorage.setItem('level', level.toString());
                 }
             } else {
-                tg.HapticFeedback.notificationOccurred('error');
-                tg.showConfirm("Energi habis! Tonton iklan untuk isi penuh energi secara instan?", (ok) => {
-                    if (ok) showAdForEnergy();
-                });
+                tg.showConfirm("Tonton iklan untuk isi penuh energi?", (ok) => { if (ok) showAdForEnergy(); });
             }
         };
     </script>

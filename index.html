@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="monetag" content="e8f98fea0168e07f6abb170da4f2d7d0">
+    
     <title>SwiftBit Quest PRO</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
@@ -27,7 +29,7 @@
     </div>
 
     <div class="coin-container" id="game-area">
-        <img id="coin" src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Gold%20Coin.png" alt="Coin">
+        <img id="coin" src="https://api.dicebear.com/7.x/icons/svg?seed=gold&icon=coin" alt="Gold Coin">
     </div>
 
     <div style="margin-bottom: 10px;">⚡ Energi: <span id="energy-text">100</span>/100</div>
@@ -40,7 +42,6 @@
         let score = 0;
         let level = 1;
         let energy = 100;
-        const maxEnergy = 100;
 
         tg.CloudStorage.getItems(['score', 'level'], (err, values) => {
             if (!err) {
@@ -54,12 +55,12 @@
             document.getElementById('score').innerText = score.toLocaleString();
             document.getElementById('level').innerText = level;
             document.getElementById('energy-text').innerText = Math.floor(energy);
-            document.getElementById('energy-inner').style.width = (energy / maxEnergy * 100) + "%";
+            document.getElementById('energy-inner').style.width = (energy / 100 * 100) + "%";
         }
 
         setInterval(() => {
-            if (energy < maxEnergy) {
-                energy = Math.min(maxEnergy, energy + 0.4);
+            if (energy < 100) {
+                energy = Math.min(100, energy + 0.4);
                 updateDisplay();
             }
         }, 1000);

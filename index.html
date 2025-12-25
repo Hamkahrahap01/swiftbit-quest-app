@@ -3,48 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SwiftBit Quest ULTIMATE</title>
+    <title>SwiftBit Quest ULTIMATE V2</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root { --primary: #ffc300; --bg: #000814; --card: rgba(255,255,255,0.08); }
-        body { background: radial-gradient(circle, #001d3d 0%, var(--bg) 100%); color: white; text-align: center; font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 80px; user-select: none; }
-        
+        body { background: radial-gradient(circle, #001d3d 0%, var(--bg) 100%); color: white; text-align: center; font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 80px; user-select: none; overflow-x: hidden; }
         #header { padding: 15px; display: flex; justify-content: space-around; background: var(--card); border-bottom: 1px solid var(--primary); sticky; top: 0; z-index: 10; }
         .stat-box { background: rgba(0,0,0,0.6); padding: 8px 15px; border-radius: 12px; border: 1px solid var(--primary); }
-        
         .page { display: none; padding: 20px; animation: slideUp 0.3s ease-out; }
         .active-page { display: block; }
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        /* Floating Text Effect */
+        .floating-text { position: absolute; color: var(--primary); font-weight: bold; pointer-events: none; animation: floatUp 0.6s ease-out forwards; font-size: 24px; z-index: 100; }
+        @keyframes floatUp { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-100px); opacity: 0; } }
 
-        /* Home */
         #coin { width: 220px; height: 220px; cursor: pointer; transition: transform 0.05s; filter: drop-shadow(0 0 25px var(--primary)); margin: 40px auto; }
         #coin:active { transform: scale(0.92); }
-        .energy-container { width: 85%; margin: 20px auto; }
-        .energy-bar { height: 18px; background: #333; border-radius: 10px; border: 2px solid #fff; overflow: hidden; }
+        .energy-bar { height: 18px; background: #333; border-radius: 10px; border: 2px solid #fff; overflow: hidden; width: 85%; margin: 10px auto; }
         #energy-inner { width: 100%; height: 100%; background: linear-gradient(90deg, #ff0054, #ffbd00); transition: width 0.3s; }
 
-        /* Navigation */
         #nav-bar { position: fixed; bottom: 0; width: 100%; height: 70px; background: #001529; display: flex; justify-content: space-around; align-items: center; border-top: 2px solid var(--primary); z-index: 100; }
         .nav-item { color: #888; cursor: pointer; font-size: 12px; display: flex; flex-direction: column; }
         .nav-item.active { color: var(--primary); font-weight: bold; }
-        .nav-icon { font-size: 24px; margin-bottom: 4px; }
-
-        /* List Styling */
         .card { background: var(--card); padding: 18px; border-radius: 16px; margin-bottom: 12px; text-align: left; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid var(--primary); }
-        .card-info h4 { margin: 0; color: var(--primary); }
-        .card-info p { margin: 5px 0 0; font-size: 12px; color: #ccc; }
-        .btn { background: var(--primary); color: black; border: none; padding: 10px 18px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        .btn:active { transform: scale(0.95); opacity: 0.8; }
+        .btn { background: var(--primary); color: black; border: none; padding: 10px 18px; border-radius: 10px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
     <div id="header">
         <div class="stat-box">💰 <span id="score">0</span></div>
-        <div class="stat-box">⚡ <span id="power">1</span> / Tap</div>
+        <div class="stat-box">⚡ <span id="power">1</span>/Tap</div>
     </div>
 
     <div id="home" class="page active-page">
-        <div id="coin-area">
+        <div id="coin-area" style="position: relative;">
             <svg id="coin" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="45" fill="gold" stroke="#b8860b" stroke-width="4"/>
                 <text x="50" y="65" text-anchor="middle" fill="#8b6508" font-size="45" font-weight="bold">$</text>
@@ -54,47 +47,49 @@
             <p>⚡ Energi: <span id="energy-text">100</span>/100</p>
             <div class="energy-bar"><div id="energy-inner"></div></div>
         </div>
+        <button class="btn" style="width: 85%; margin-top: 20px;" onclick="claimDaily()">🎁 Klaim Bonus Harian</button>
     </div>
 
     <div id="shop" class="page">
         <h2>Toko Upgrade</h2>
         <div class="card">
-            <div class="card-info">
-                <h4>Multi-Tap</h4>
-                <p>Tambah +1 koin tiap klik</p>
-                <p>Harga: 💰 <span id="upgrade-cost">100</span></p>
-            </div>
+            <div class="card-info"><h4>Multi-Tap</h4><p>Harga: 💰 <span id="upgrade-cost">100</span></p></div>
             <button class="btn" onclick="buyUpgrade()">Beli</button>
         </div>
     </div>
 
     <div id="tasks" class="page">
         <h2>Tugas Harian</h2>
-        <div class="card">
-            <div class="card-info"><h4>Follow Socials</h4><p>Dapatkan bonus instan</p></div>
-            <button class="btn">+500</button>
-        </div>
+        <div class="card"><span>Follow Channel</span><button class="btn" onclick="window.open('https://t.me/YourChannel')">Go</button></div>
     </div>
 
     <div id="friends" class="page">
         <h2>Undang Teman</h2>
-        <div class="card">
-            <div class="card-info"><h4>Referral System</h4><p>10,000 koin per orang</p></div>
-            <button class="btn" onclick="inviteFriend()">Undang</button>
-        </div>
+        <div class="card"><span>Invite & Earn 10k</span><button class="btn" onclick="inviteFriend()">Invite</button></div>
     </div>
 
     <div id="nav-bar">
-        <div class="nav-item active" onclick="showPage('home', this)"><span class="nav-icon">🏠</span>Home</div>
-        <div class="nav-item" onclick="showPage('shop', this)"><span class="nav-icon">🛒</span>Shop</div>
-        <div class="nav-item" onclick="showPage('tasks', this)"><span class="nav-icon">📋</span>Tasks</div>
-        <div class="nav-item" onclick="showPage('friends', this)"><span class="nav-icon">👥</span>Friends</div>
+        <div class="nav-item active" onclick="showPage('home', this)"><span>🏠</span>Home</div>
+        <div class="nav-item" onclick="showPage('shop', this)"><span>🛒</span>Shop</div>
+        <div class="nav-item" onclick="showPage('tasks', this)"><span>📋</span>Tasks</div>
+        <div class="nav-item" onclick="showPage('friends', this)"><span>👥</span>Friends</div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-        let score = 0, energy = 100, tapPower = 1, upgradeCost = 100;
+
+        // Load Data dari Browser (Auto-Save)
+        let score = parseInt(localStorage.getItem('sb_score')) || 0;
+        let tapPower = parseInt(localStorage.getItem('sb_power')) || 1;
+        let upgradeCost = parseInt(localStorage.getItem('sb_cost')) || 100;
+        let energy = 100;
+
+        function saveData() {
+            localStorage.setItem('sb_score', score);
+            localStorage.setItem('sb_power', tapPower);
+            localStorage.setItem('sb_cost', upgradeCost);
+        }
 
         function showPage(pageId, element) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
@@ -109,39 +104,56 @@
             document.getElementById('energy-text').innerText = Math.floor(energy);
             document.getElementById('energy-inner').style.width = energy + "%";
             document.getElementById('upgrade-cost').innerText = upgradeCost.toLocaleString();
+            saveData();
         }
 
-        setInterval(() => { if (energy < 100) { energy = Math.min(100, energy + 0.4); updateDisplay(); } }, 1000);
+        setInterval(() => { if (energy < 100) { energy = Math.min(100, energy + 0.5); updateDisplay(); } }, 1000);
 
         document.getElementById('coin').onclick = (e) => {
             if (energy >= 1) {
                 score += tapPower; energy--;
+                createFloatingText(e.clientX, e.clientY, "+" + tapPower);
                 tg.HapticFeedback.impactOccurred('light'); updateDisplay();
             } else {
-                tg.showConfirm("Energi habis! Tonton iklan untuk isi penuh?", (ok) => { 
-                    if (ok) {
-                        tg.openLink("https://otieu.com/4/10374339");
-                        energy = 100; updateDisplay();
-                    }
+                tg.showConfirm("Energi habis! Tonton iklan?", (ok) => { 
+                    if (ok) { tg.openLink("https://otieu.com/4/10374339"); energy = 100; updateDisplay(); }
                 });
             }
         };
 
+        function createFloatingText(x, y, text) {
+            const el = document.createElement('div');
+            el.className = 'floating-text';
+            el.innerText = text;
+            el.style.left = x + 'px';
+            el.style.top = (y - 50) + 'px';
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 600);
+        }
+
         function buyUpgrade() {
             if (score >= upgradeCost) {
-                score -= upgradeCost;
-                tapPower += 1;
-                upgradeCost = Math.floor(upgradeCost * 2.5);
-                tg.showAlert("Upgrade Berhasil! Kekuatan tap naik.");
+                score -= upgradeCost; tapPower++; upgradeCost *= 2;
+                tg.showAlert("Upgrade Berhasil!"); updateDisplay();
+            } else { tg.showAlert("Koin tidak cukup!"); }
+        }
+
+        function claimDaily() {
+            const lastClaim = localStorage.getItem('sb_last_claim');
+            const now = new Date().getTime();
+            if (!lastClaim || now - lastClaim > 86400000) {
+                score += 5000;
+                localStorage.setItem('sb_last_claim', now);
+                tg.showAlert("Selamat! +5,000 koin harian.");
                 updateDisplay();
-            } else {
-                tg.showAlert("Koin tidak cukup!");
-            }
+            } else { tg.showAlert("Anda sudah klaim hari ini!"); }
         }
 
         function inviteFriend() {
-            tg.openTelegramLink("https://t.me/share/url?url=https://t.me/YourBot&text=Main yuk!");
+            tg.openTelegramLink("https://t.me/share/url?url=https://t.me/YourBot&text=Join SwiftBit!");
         }
+
+        updateDisplay();
     </script>
 </body>
 </html>

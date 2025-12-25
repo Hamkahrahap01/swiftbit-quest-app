@@ -3,93 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SwiftBit Quest ULTIMATE V2</title>
+    <title>SwiftBit Quest EARN V3</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root { --primary: #ffc300; --bg: #000814; --card: rgba(255,255,255,0.08); }
         body { background: radial-gradient(circle, #001d3d 0%, var(--bg) 100%); color: white; text-align: center; font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 80px; user-select: none; overflow-x: hidden; }
-        #header { padding: 15px; display: flex; justify-content: space-around; background: var(--card); border-bottom: 1px solid var(--primary); sticky; top: 0; z-index: 10; }
+        
+        /* Running Text */
+        .marquee { background: var(--primary); color: black; font-weight: bold; padding: 5px 0; overflow: hidden; white-space: nowrap; position: sticky; top: 0; z-index: 20; font-size: 13px; }
+        .marquee p { display: inline-block; padding-left: 100%; animation: marquee 15s linear infinite; margin: 0; }
+        @keyframes marquee { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
+
+        #header { padding: 15px; display: flex; justify-content: space-around; background: var(--card); border-bottom: 1px solid var(--primary); }
         .stat-box { background: rgba(0,0,0,0.6); padding: 8px 15px; border-radius: 12px; border: 1px solid var(--primary); }
         .page { display: none; padding: 20px; animation: slideUp 0.3s ease-out; }
         .active-page { display: block; }
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         
-        /* Floating Text Effect */
-        .floating-text { position: absolute; color: var(--primary); font-weight: bold; pointer-events: none; animation: floatUp 0.6s ease-out forwards; font-size: 24px; z-index: 100; }
-        @keyframes floatUp { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-100px); opacity: 0; } }
-
-        #coin { width: 220px; height: 220px; cursor: pointer; transition: transform 0.05s; filter: drop-shadow(0 0 25px var(--primary)); margin: 40px auto; }
-        #coin:active { transform: scale(0.92); }
+        #coin { width: 200px; height: 200px; cursor: pointer; transition: transform 0.05s; filter: drop-shadow(0 0 20px var(--primary)); margin: 30px auto; }
         .energy-bar { height: 18px; background: #333; border-radius: 10px; border: 2px solid #fff; overflow: hidden; width: 85%; margin: 10px auto; }
         #energy-inner { width: 100%; height: 100%; background: linear-gradient(90deg, #ff0054, #ffbd00); transition: width 0.3s; }
 
         #nav-bar { position: fixed; bottom: 0; width: 100%; height: 70px; background: #001529; display: flex; justify-content: space-around; align-items: center; border-top: 2px solid var(--primary); z-index: 100; }
-        .nav-item { color: #888; cursor: pointer; font-size: 12px; display: flex; flex-direction: column; }
+        .nav-item { color: #888; cursor: pointer; font-size: 11px; display: flex; flex-direction: column; }
         .nav-item.active { color: var(--primary); font-weight: bold; }
-        .card { background: var(--card); padding: 18px; border-radius: 16px; margin-bottom: 12px; text-align: left; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid var(--primary); }
+        
+        .card { background: var(--card); padding: 15px; border-radius: 16px; margin-bottom: 12px; text-align: left; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid var(--primary); }
         .btn { background: var(--primary); color: black; border: none; padding: 10px 18px; border-radius: 10px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
+    <div class="marquee"><p>🔥 INFO: Kumpulkan 1.000.000 Koin untuk klaim hadiah saldo Rp 10.000! • Pantau terus grup resmi kami! • Tap terus untuk jadi Juara!</p></div>
+
     <div id="header">
         <div class="stat-box">💰 <span id="score">0</span></div>
         <div class="stat-box">⚡ <span id="power">1</span>/Tap</div>
     </div>
 
     <div id="home" class="page active-page">
-        <div id="coin-area" style="position: relative;">
-            <svg id="coin" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="45" fill="gold" stroke="#b8860b" stroke-width="4"/>
-                <text x="50" y="65" text-anchor="middle" fill="#8b6508" font-size="45" font-weight="bold">$</text>
-            </svg>
-        </div>
-        <div class="energy-container">
-            <p>⚡ Energi: <span id="energy-text">100</span>/100</p>
-            <div class="energy-bar"><div id="energy-inner"></div></div>
-        </div>
-        <button class="btn" style="width: 85%; margin-top: 20px;" onclick="claimDaily()">🎁 Klaim Bonus Harian</button>
+        <div id="coin-area"><svg id="coin" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="gold" stroke="#b8860b" stroke-width="4"/><text x="50" y="65" text-anchor="middle" fill="#8b6508" font-size="45" font-weight="bold">$</text></svg></div>
+        <div class="energy-container"><p>⚡ Energi: <span id="energy-text">100</span>/100</p><div class="energy-bar"><div id="energy-inner"></div></div></div>
+        <button class="btn" style="width: 85%; margin-top: 10px;" onclick="claimDaily()">🎁 Klaim Bonus Harian</button>
+    </div>
+
+    <div id="tasks" class="page">
+        <h2>Tugas Berhadiah</h2>
+        <p style="font-size: 12px; color: #aaa;">Klik "Go" & tonton iklan sampai selesai untuk koin!</p>
+        <div class="card"><div><h4>Cek Bonus 1</h4><p>+5,000 Koin</p></div><button class="btn" onclick="doTask(5000)">Go</button></div>
+        <div class="card"><div><h4>Cek Bonus 2</h4><p>+10,000 Koin</p></div><button class="btn" onclick="doTask(10000)">Go</button></div>
+    </div>
+
+    <div id="withdraw" class="page">
+        <h2>Tukar Koin</h2>
+        <div class="stat-box" style="margin-bottom: 20px;">Estimasi: <br><b id="money">Rp 0</b></div>
+        <div class="card"><div><h4>E-Wallet Saldo</h4><p>Min. 1 Juta Koin</p></div><button class="btn" onclick="requestWithdraw()">Tukar</button></div>
     </div>
 
     <div id="shop" class="page">
         <h2>Toko Upgrade</h2>
-        <div class="card">
-            <div class="card-info"><h4>Multi-Tap</h4><p>Harga: 💰 <span id="upgrade-cost">100</span></p></div>
-            <button class="btn" onclick="buyUpgrade()">Beli</button>
-        </div>
-    </div>
-
-    <div id="tasks" class="page">
-        <h2>Tugas Harian</h2>
-        <div class="card"><span>Follow Channel</span><button class="btn" onclick="window.open('https://t.me/YourChannel')">Go</button></div>
-    </div>
-
-    <div id="friends" class="page">
-        <h2>Undang Teman</h2>
-        <div class="card"><span>Invite & Earn 10k</span><button class="btn" onclick="inviteFriend()">Invite</button></div>
+        <div class="card"><div><h4>Multi-Tap</h4><p>Harga: <span id="upgrade-cost">100</span></p></div><button class="btn" onclick="buyUpgrade()">Beli</button></div>
     </div>
 
     <div id="nav-bar">
         <div class="nav-item active" onclick="showPage('home', this)"><span>🏠</span>Home</div>
-        <div class="nav-item" onclick="showPage('shop', this)"><span>🛒</span>Shop</div>
         <div class="nav-item" onclick="showPage('tasks', this)"><span>📋</span>Tasks</div>
-        <div class="nav-item" onclick="showPage('friends', this)"><span>👥</span>Friends</div>
+        <div class="nav-item" onclick="showPage('withdraw', this)"><span>💸</span>Tukar</div>
+        <div class="nav-item" onclick="showPage('shop', this)"><span>🛒</span>Shop</div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Load Data dari Browser (Auto-Save)
         let score = parseInt(localStorage.getItem('sb_score')) || 0;
         let tapPower = parseInt(localStorage.getItem('sb_power')) || 1;
         let upgradeCost = parseInt(localStorage.getItem('sb_cost')) || 100;
         let energy = 100;
-
-        function saveData() {
-            localStorage.setItem('sb_score', score);
-            localStorage.setItem('sb_power', tapPower);
-            localStorage.setItem('sb_cost', upgradeCost);
-        }
 
         function showPage(pageId, element) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
@@ -104,7 +93,10 @@
             document.getElementById('energy-text').innerText = Math.floor(energy);
             document.getElementById('energy-inner').style.width = energy + "%";
             document.getElementById('upgrade-cost').innerText = upgradeCost.toLocaleString();
-            saveData();
+            document.getElementById('money').innerText = "Rp " + Math.floor(score / 100).toLocaleString();
+            localStorage.setItem('sb_score', score);
+            localStorage.setItem('sb_power', tapPower);
+            localStorage.setItem('sb_cost', upgradeCost);
         }
 
         setInterval(() => { if (energy < 100) { energy = Math.min(100, energy + 0.5); updateDisplay(); } }, 1000);
@@ -112,45 +104,40 @@
         document.getElementById('coin').onclick = (e) => {
             if (energy >= 1) {
                 score += tapPower; energy--;
-                createFloatingText(e.clientX, e.clientY, "+" + tapPower);
                 tg.HapticFeedback.impactOccurred('light'); updateDisplay();
             } else {
-                tg.showConfirm("Energi habis! Tonton iklan?", (ok) => { 
-                    if (ok) { tg.openLink("https://otieu.com/4/10374339"); energy = 100; updateDisplay(); }
-                });
+                tg.showConfirm("Energi habis! Tonton iklan?", (ok) => { if (ok) { tg.openLink("https://otieu.com/4/10374339"); energy = 100; updateDisplay(); } });
             }
         };
 
-        function createFloatingText(x, y, text) {
-            const el = document.createElement('div');
-            el.className = 'floating-text';
-            el.innerText = text;
-            el.style.left = x + 'px';
-            el.style.top = (y - 50) + 'px';
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 600);
+        function doTask(reward) {
+            tg.openLink("https://otieu.com/4/10374339"); // Iklan Monetag
+            score += reward;
+            tg.showAlert("Tugas Berhasil! Bonus +" + reward.toLocaleString() + " koin diberikan.");
+            updateDisplay();
+        }
+
+        function requestWithdraw() {
+            if (score >= 1000000) {
+                tg.showAlert("Permintaan terkirim! Admin akan memvalidasi koin Anda.");
+            } else {
+                tg.showAlert("Koin minimal 1.000.000 untuk penukaran!");
+            }
         }
 
         function buyUpgrade() {
             if (score >= upgradeCost) {
-                score -= upgradeCost; tapPower++; upgradeCost *= 2;
-                tg.showAlert("Upgrade Berhasil!"); updateDisplay();
+                score -= upgradeCost; tapPower++; upgradeCost *= 2; updateDisplay();
             } else { tg.showAlert("Koin tidak cukup!"); }
         }
 
         function claimDaily() {
-            const lastClaim = localStorage.getItem('sb_last_claim');
             const now = new Date().getTime();
-            if (!lastClaim || now - lastClaim > 86400000) {
-                score += 5000;
-                localStorage.setItem('sb_last_claim', now);
-                tg.showAlert("Selamat! +5,000 koin harian.");
-                updateDisplay();
-            } else { tg.showAlert("Anda sudah klaim hari ini!"); }
-        }
-
-        function inviteFriend() {
-            tg.openTelegramLink("https://t.me/share/url?url=https://t.me/YourBot&text=Join SwiftBit!");
+            const last = localStorage.getItem('sb_last');
+            if (!last || now - last > 86400000) {
+                score += 5000; localStorage.setItem('sb_last', now); updateDisplay();
+                tg.showAlert("Bonus Harian +5,000!");
+            } else { tg.showAlert("Sudah klaim hari ini!"); }
         }
 
         updateDisplay();

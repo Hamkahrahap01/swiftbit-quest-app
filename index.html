@@ -3,11 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <meta name="monetag" content="2febe9684aeb35ed08670750a3716f05">
-    
-    <script src='//libtl.com/sdk.js' data-zone='10367286' data-sdk='show_10367286'></script>
-    
     <title>SwiftBit Quest PRO</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
@@ -21,8 +16,6 @@
         #coin:active { transform: scale(0.92); }
         .energy-bar-container { width: 80%; height: 20px; background: #333; margin: 20px auto; border-radius: 10px; border: 2px solid #fff; overflow: hidden; }
         #energy-inner { width: 100%; height: 100%; background: linear-gradient(90deg, #ff0054, #ffbd00); transition: width 0.3s; }
-        .floating-text { position: absolute; color: #ffc300; font-weight: bold; pointer-events: none; animation: floatUp 0.8s ease-out forwards; font-size: 24px; }
-        @keyframes floatUp { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-100px); opacity: 0; } }
     </style>
 </head>
 <body>
@@ -35,12 +28,11 @@
         <svg id="coin" viewBox="0 0 100 100">
             <defs>
                 <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#ffeb3b;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#f9a825;stop-opacity:1" />
+                    <stop offset="0%" style="stop-color:#ffeb3b;stop-opacity:1" /><stop offset="100%" style="stop-color:#f9a825;stop-opacity:1" />
                 </linearGradient>
             </defs>
             <circle cx="50" cy="50" r="45" fill="url(#goldGrad)" stroke="#e3b200" stroke-width="4"/>
-            <text x="50" y="68" text-anchor="middle" fill="#bf8f00" font-size="50" font-weight="bold" font-family="Arial">$</text>
+            <text x="50" y="68" text-anchor="middle" fill="#bf8f00" font-size="50" font-weight="bold">$</text>
         </svg>
     </div>
 
@@ -50,16 +42,7 @@
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-        
         let score = 0, level = 1, energy = 100;
-
-        tg.CloudStorage.getItems(['score', 'level'], (err, values) => {
-            if (!err) {
-                score = parseInt(values.score || 0);
-                level = parseInt(values.level || 1);
-                updateDisplay();
-            }
-        });
 
         function updateDisplay() {
             document.getElementById('score').innerText = score.toLocaleString();
@@ -71,37 +54,23 @@
         setInterval(() => { if (energy < 100) { energy = Math.min(100, energy + 0.5); updateDisplay(); } }, 1000);
 
         function showAdForEnergy() {
-            // Pemanggilan Fungsi SDK data-sdk='show_10367286'
-            if (typeof show_10367286 === 'function') {
-                show_10367286().then(() => {
-                    energy = 100;
-                    updateDisplay();
-                    tg.showAlert("HADIAH DITERIMA! Energi penuh.");
-                }).catch(() => {
-                    tg.showAlert("Gagal memuat iklan. Periksa koneksi atau matikan DNS.");
-                });
-            } else {
-                tg.showAlert("Menunggu respon server iklan...");
-            }
+            // Karena Social Bar Adsterra muncul otomatis, kita langsung beri hadiah
+            // Pemain tetap harus melihat iklan yang muncul di layar
+            energy = 100;
+            updateDisplay();
+            tg.showAlert("ENERGI PENUH! Pastikan Anda melihat iklan Social Bar di layar.");
         }
 
         document.getElementById('coin').onclick = (e) => {
             if (energy >= 1) {
                 score++; energy--; level = Math.floor(score / 150) + 1;
-                const text = document.createElement('div');
-                text.innerText = "+1"; text.className = 'floating-text';
-                text.style.left = e.pageX + "px"; text.style.top = e.pageY + "px";
-                document.getElementById('game-area').appendChild(text);
-                setTimeout(() => text.remove(), 800);
                 tg.HapticFeedback.impactOccurred('medium'); updateDisplay();
-                if (score % 5 === 0) {
-                    tg.CloudStorage.setItem('score', score.toString());
-                    tg.CloudStorage.setItem('level', level.toString());
-                }
             } else {
-                tg.showConfirm("Energi habis! Tonton iklan untuk isi?", (ok) => { if (ok) showAdForEnergy(); });
+                tg.showConfirm("Energi habis! Klik OK dan tonton iklan di bawah untuk isi?", (ok) => { if (ok) showAdForEnergy(); });
             }
         };
     </script>
+
+    <script src="https://pl28331609.effectivegatecpm.com/ca/51/10/ca511057422af680e6b6e080324dc301.js"></script>
 </body>
 </html>

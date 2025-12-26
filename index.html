@@ -16,7 +16,7 @@
         .page { display: none; padding: 20px; animation: slideUp 0.3s ease-out; }
         .active-page { display: block; }
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        #coin { width: 200px; height: 200px; cursor: pointer; transition: transform 0.05s; filter: drop-shadow(0 0 20px var(--primary)); margin: 30px auto; }
+        #coin { width: 180px; height: 180px; cursor: pointer; transition: transform 0.05s; filter: drop-shadow(0 0 20px var(--primary)); margin: 20px auto; }
         #coin:active { transform: scale(0.92); }
         .energy-bar { height: 18px; background: #333; border-radius: 10px; border: 2px solid #fff; overflow: hidden; width: 85%; margin: 10px auto; }
         #energy-inner { height: 100%; background: linear-gradient(90deg, #ff0054, #ffbd00); transition: width 0.3s; }
@@ -25,10 +25,12 @@
         .nav-item.active { color: var(--primary); font-weight: bold; }
         .card { background: var(--card); padding: 15px; border-radius: 16px; margin-bottom: 12px; text-align: left; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid var(--primary); }
         .btn { background: var(--primary); color: black; border: none; padding: 10px 18px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .rank-list { text-align: left; background: var(--card); border-radius: 15px; padding: 10px; }
+        .rank-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
     </style>
 </head>
 <body>
-    <div class="marquee"><p>🔥 UNDANG TEMAN: +50.000 Koin! • Admin: @Hamkaharahap • Gunakan Auto-Bot & Multi-Tap untuk Cuan Maksimal!</p></div>
+    <div class="marquee"><p>🔥 UNDANG TEMAN: +50.000 Koin! • Admin: @Hamkaharahap • Gunakan Auto-Bot & Cek Leaderboard Global!</p></div>
     
     <div id="header">
         <div class="stat-box">💰 <span id="score">0</span></div>
@@ -43,6 +45,19 @@
         </div>
         <button class="btn" style="width: 85%; margin-top: 10px;" onclick="claimDaily()">🎁 Klaim Bonus Harian</button>
         <button class="btn" style="width: 85%; margin-top: 10px; background: #007bff;" onclick="activateAutoBot()">🤖 Aktifkan Auto-Bot (Tonton Iklan)</button>
+    </div>
+
+    <div id="leaderboard" class="page">
+        <h2>🏆 Leaderboard Global</h2>
+        <p style="font-size: 12px; color: #aaa;">Update: Menghubungkan ke Server...</p>
+        <div class="rank-list">
+            <div class="rank-item"><span>🥇 1. Sultan_Cuan</span><b>5.2M Koin</b></div>
+            <div class="rank-item"><span>🥈 2. Raja_Tap</span><b>4.8M Koin</b></div>
+            <div class="rank-item"><span>🥉 3. Crypto_Hunter</span><b>3.5M Koin</b></div>
+            <div class="rank-item"><span>🏅 4. Budi_Pro</span><b>2.1M Koin</b></div>
+            <div class="rank-item"><span>🏅 5. Anda (User)</span><b id="your-rank">0 Koin</b></div>
+        </div>
+        <p style="margin-top: 20px; font-size: 12px;">Kejar peringkat 1 untuk bonus mingguan!</p>
     </div>
 
     <div id="friends" class="page">
@@ -61,15 +76,6 @@
             <button class="btn" onclick="checkDailyCombo()" style="background: white;">Masukan</button>
         </div>
         <div class="card"><div><h4>Tugas Sponsor 1</h4><p>+5,000 Koin</p></div><button class="btn" onclick="doTask(5000)">Go</button></div>
-        <div class="card"><div><h4>Tugas Sponsor 2</h4><p>+10,000 Koin</p></div><button class="btn" onclick="doTask(10000)">Go</button></div>
-    </div>
-
-    <div id="withdraw" class="page">
-        <h2>Tukar Koin</h2>
-        <div class="stat-box" style="margin-bottom: 20px;">Estimasi Saldo: <br><b id="money" style="font-size: 24px;">Rp 0</b></div>
-        <div class="card"><div><h4>DANA / OVO</h4><p>Min. 1 Juta Koin</p></div><button class="btn" onclick="requestWD('E-Wallet')">Tukar</button></div>
-        <div class="card"><div><h4>PayPal</h4><p>Min. 5 Juta Koin</p></div><button class="btn" onclick="requestWD('PayPal')">Tukar</button></div>
-        <button class="btn" style="width: 100%; margin-top: 20px; background: #6f42c1;" onclick="alert('Leaderboard Update: Menghubungkan ke Server...')">🏆 LEADERBOARD GLOBAL</button>
     </div>
 
     <div id="shop" class="page">
@@ -80,10 +86,10 @@
 
     <div id="nav-bar">
         <div class="nav-item active" onclick="showPage('home', this)"><span>🏠</span>Home</div>
+        <div class="nav-item" onclick="showPage('leaderboard', this)"><span>🏆</span>Rank</div>
         <div class="nav-item" onclick="showPage('friends', this)"><span>👥</span>Friends</div>
-        <div class="nav-item" onclick="showPage('tasks', this)"><span>📋</span>Tasks</div>
-        <div class="nav-item" onclick="showPage('withdraw', this)"><span>💸</span>Tukar</div>
         <div class="nav-item" onclick="showPage('shop', this)"><span>🛒</span>Shop</div>
+        <div class="nav-item" onclick="showPage('tasks', this)"><span>💸</span>Withdraw</div>
     </div>
 
     <script>
@@ -107,6 +113,7 @@
 
         function updateDisplay() {
             document.getElementById('score').innerText = score.toLocaleString();
+            document.getElementById('your-rank').innerText = score.toLocaleString() + " Koin";
             document.getElementById('power').innerText = tapPower;
             document.getElementById('energy-text').innerText = Math.floor(energy);
             document.getElementById('max-energy-text').innerText = maxEnergy;
@@ -114,7 +121,6 @@
             document.getElementById('upgrade-cost').innerText = upgradeCost.toLocaleString();
             document.getElementById('energy-cost').innerText = energyCost.toLocaleString();
             document.getElementById('friend-count').innerText = fCount;
-            document.getElementById('money').innerText = "Rp " + Math.floor(score / 100).toLocaleString();
             
             localStorage.setItem('sb_score', score);
             localStorage.setItem('sb_power', tapPower);
@@ -124,7 +130,6 @@
             localStorage.setItem('sb_friends', fCount);
         }
 
-        // Pemulihan Energi
         setInterval(() => { if (energy < maxEnergy) { energy = Math.min(maxEnergy, energy + (maxEnergy * 0.005)); updateDisplay(); } }, 1000);
 
         document.getElementById('coin').onclick = (e) => {
@@ -138,19 +143,18 @@
 
         function buyUpgrade() {
             if (score >= upgradeCost) { score -= upgradeCost; tapPower++; upgradeCost *= 2; updateDisplay(); }
-            else tg.showAlert("Koin kurang!");
+            else { tg.showAlert("Koin tidak cukup!"); }
         }
 
         function buyEnergyUpgrade() {
             if (score >= energyCost) { score -= energyCost; maxEnergy += 50; energyCost *= 2; updateDisplay(); }
-            else tg.showAlert("Koin kurang!");
+            else { tg.showAlert("Koin tidak cukup!"); }
         }
 
         function activateAutoBot() {
-            tg.showConfirm("Aktifkan Auto-Bot selama 60 detik dengan menonton iklan?", (ok) => {
+            tg.showConfirm("Aktifkan Auto-Bot 60 detik via Iklan?", (ok) => {
                 if(ok) {
                     tg.openLink("https://otieu.com/4/10374339");
-                    tg.showAlert("Auto-Bot Aktif!");
                     let botLife = 60;
                     let botInt = setInterval(() => {
                         if (botLife > 0 && energy >= tapPower) {
@@ -158,6 +162,7 @@
                             botLife--;
                         } else { clearInterval(botInt); }
                     }, 1000);
+                    tg.showAlert("Auto-Bot Bekerja!");
                 }
             });
         }
@@ -169,30 +174,19 @@
         }
 
         function inviteFriend() {
-            const botUrl = "https://t.me/swiftbit_quest_bot"; 
-            const shareText = "Main SwiftBit Quest yuk! Dapetin saldo DANA gratis.";
-            tg.openTelegramLink(`https://t.me/share/url?url=${botUrl}&text=${shareText}`);
+            tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/swiftbit_quest_bot&text=Main yuk!`);
             fCount++; score += 50000; updateDisplay();
         }
 
         function claimDaily() {
             const now = new Date().getTime();
             const last = parseInt(localStorage.getItem('sb_last')) || 0;
-            let streak = parseInt(localStorage.getItem('sb_streak')) || 0;
             if (now - last < 86400000) { tg.showAlert("Kembali besok!"); return; }
-            streak = (now - last > 172800000) ? 1 : (streak % 7) + 1;
-            let reward = streak === 7 ? 50000 : streak * 5000;
-            score += reward; localStorage.setItem('sb_last', now); localStorage.setItem('sb_streak', streak);
-            updateDisplay(); tg.showAlert(`Klaim Hari ke-${streak}: +${reward.toLocaleString()} Koin!`);
+            score += 10000; localStorage.setItem('sb_last', now);
+            updateDisplay(); tg.showAlert("Bonus Harian +10.000 Koin!");
         }
 
         function doTask(r) { tg.openLink("https://otieu.com/4/10374339"); score += r; updateDisplay(); tg.showAlert("Tugas Berhasil!"); }
-
-        function requestWD(m) {
-            const min = m === 'PayPal' ? 5000000 : 1000000;
-            if (score >= min) tg.showAlert(`Berhasil! Silakan chat Admin @Hamkaharahap.`);
-            else tg.showAlert(`Min. ${min.toLocaleString()} koin untuk ${m}!`);
-        }
 
         updateDisplay();
     </script>

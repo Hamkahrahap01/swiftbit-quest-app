@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SwiftBit Quest ULTIMATE V6 PRO</title>
+    <title>SwiftBit Quest ULTIMATE V6 PRO FINAL</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root { --primary: #ffc300; --bg: #000814; --card: rgba(255,255,255,0.08); }
@@ -16,7 +16,7 @@
         .page { display: none; padding: 20px; animation: slideUp 0.3s ease-out; }
         .active-page { display: block; }
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        #coin { width: 180px; height: 180px; cursor: pointer; transition: transform 0.05s; filter: drop-shadow(0 0 20px var(--primary)); margin: 20px auto; }
+        #coin { width: 170px; height: 170px; cursor: pointer; transition: transform 0.05s; filter: drop-shadow(0 0 20px var(--primary)); margin: 20px auto; }
         #coin:active { transform: scale(0.92); }
         .energy-bar { height: 18px; background: #333; border-radius: 10px; border: 2px solid #fff; overflow: hidden; width: 85%; margin: 10px auto; }
         #energy-inner { height: 100%; background: linear-gradient(90deg, #ff0054, #ffbd00); transition: width 0.3s; }
@@ -29,7 +29,7 @@
     </style>
 </head>
 <body>
-    <div class="marquee"><p>🔥 ADMIN: @Hamkaharahap • Tarik Saldo DANA, OVO & PayPal Sekarang! • Gunakan Auto-Bot Untuk Koin Lebih Cepat!</p></div>
+    <div class="marquee"><p>🔥 UNDANG TEMAN: +50.000 Koin! • Admin: @Hamkaharahap • Gunakan Auto-Bot & Tukar Koin Sekarang!</p></div>
     
     <div id="header">
         <div class="stat-box">💰 <span id="score">0</span></div>
@@ -47,13 +47,16 @@
     </div>
 
     <div id="tasks" class="page">
-        <h2>Tugas & Daily Combo</h2>
+        <h2>📋 Tugas & Referral</h2>
+        <div class="card" style="border-left: 4px solid #00ff00;">
+            <div><h4>Undang Teman</h4><p>Dapatkan +50,000 Koin</p></div>
+            <button class="btn" onclick="inviteFriend()">Undang</button>
+        </div>
         <div class="card" style="background: #ff8c00; color: black;">
-            <div><h4>Daily Combo Cipher</h4><p>Input Kode Hari Ini</p></div>
+            <div><h4>Daily Combo Cipher</h4><p>Input Kode Rahasia</p></div>
             <button class="btn" onclick="checkDailyCombo()" style="background: white;">Masukan</button>
         </div>
-        <div class="card"><div><h4>Tugas Sponsor 1</h4><p>+5,000 Koin</p></div><button class="btn" onclick="doTask(5000)">Go</button></div>
-        <div class="card"><div><h4>Tugas Sponsor 2</h4><p>+10,000 Koin</p></div><button class="btn" onclick="doTask(10000)">Go</button></div>
+        <div class="card"><div><h4>Tugas Sponsor</h4><p>+10,000 Koin</p></div><button class="btn" onclick="doTask(10000)">Go</button></div>
     </div>
 
     <div id="withdraw" class="page">
@@ -61,18 +64,17 @@
         <div class="stat-box" style="margin-bottom: 20px;">Estimasi Saldo: <br><b id="money" style="font-size: 24px;">Rp 0</b></div>
         <div class="card"><div><h4>DANA / OVO</h4><p>Min. 1 Juta Koin</p></div><button class="btn" onclick="requestWD('E-Wallet')">Tukar</button></div>
         <div class="card"><div><h4>PayPal</h4><p>Min. 5 Juta Koin</p></div><button class="btn" onclick="requestWD('PayPal')">Tukar</button></div>
-        <p style="font-size: 11px; color: #888;">Hubungi Admin @Hamkaharahap setelah tukar koin.</p>
     </div>
 
     <div id="rank" class="page">
-        <h2>🏆 Rank Global</h2>
-        <div class="rank-item"><span>🥇 1. Sultan_Cuan</span><b>5.2M</b></div>
-        <div class="rank-item"><span>🥈 2. Raja_Tap</span><b>4.8M</b></div>
+        <h2>🏆 Peringkat Global</h2>
+        <div class="rank-item"><span>🥇 1. Sultan_Cuan</span><b>12.5M</b></div>
+        <div class="rank-item"><span>🥈 2. Raja_Tap</span><b>8.2M</b></div>
         <div class="rank-item"><span>🥉 3. Anda</span><b id="your-rank">0</b></div>
     </div>
 
     <div id="shop" class="page">
-        <h2>🛒 Shop Upgrade</h2>
+        <h2>🛒 Toko Upgrade</h2>
         <div class="card"><div><h4>Multi-Tap</h4><p>Harga: <span id="upgrade-cost">100</span></p></div><button class="btn" onclick="buyUpgrade()">Beli</button></div>
         <div class="card"><div><h4>Max Energy</h4><p>Harga: <span id="energy-cost">500</span></p></div><button class="btn" onclick="buyEnergyUpgrade()">Beli</button></div>
     </div>
@@ -80,7 +82,7 @@
     <div id="nav-bar">
         <div class="nav-item active" onclick="showPage('home', this)"><span>🏠</span>Home</div>
         <div class="nav-item" onclick="showPage('tasks', this)"><span>📋</span>Tasks</div>
-        <div class="nav-item" onclick="showPage('withdraw', this)"><span>💸</span>Withdraw</div>
+        <div class="nav-item" onclick="showPage('withdraw', this)"><span>💸</span>WD</div>
         <div class="nav-item" onclick="showPage('rank', this)"><span>🏆</span>Rank</div>
         <div class="nav-item" onclick="showPage('shop', this)"><span>🛒</span>Shop</div>
     </div>
@@ -132,14 +134,15 @@
             }
         };
 
-        function buyUpgrade() {
-            if (score >= upgradeCost) { score -= upgradeCost; tapPower++; upgradeCost *= 2; updateDisplay(); }
-            else tg.showAlert("Koin kurang!");
+        function inviteFriend() {
+            tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/swiftbit_quest_bot&text=Main yuk!`);
+            score += 50000; updateDisplay(); tg.showAlert("Bonus Referral +50.000 Koin!");
         }
 
-        function buyEnergyUpgrade() {
-            if (score >= energyCost) { score -= energyCost; maxEnergy += 50; energyCost *= 2; updateDisplay(); }
-            else tg.showAlert("Koin kurang!");
+        function checkDailyCombo() {
+            let code = prompt("Masukkan Kode Cipher Hari Ini:");
+            if (code === "2025") { score += 100000; updateDisplay(); tg.showAlert("Bonus +100.000 Koin!"); }
+            else tg.showAlert("Kode Salah!");
         }
 
         function requestWD(m) {
@@ -148,10 +151,14 @@
             else tg.showAlert(`Minimal ${min.toLocaleString()} koin untuk ${m}!`);
         }
 
-        function checkDailyCombo() {
-            let code = prompt("Masukkan Kode Cipher Hari Ini:");
-            if (code === "2025") { score += 100000; updateDisplay(); tg.showAlert("Bonus +100.000 Koin!"); }
-            else tg.showAlert("Kode Salah!");
+        function buyUpgrade() {
+            if (score >= upgradeCost) { score -= upgradeCost; tapPower++; upgradeCost *= 2; updateDisplay(); }
+            else tg.showAlert("Koin kurang!");
+        }
+
+        function buyEnergyUpgrade() {
+            if (score >= energyCost) { score -= energyCost; maxEnergy += 50; energyCost *= 2; updateDisplay(); }
+            else tg.showAlert("Koin kurang!");
         }
 
         function activateAutoBot() {

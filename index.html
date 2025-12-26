@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SwiftBit Quest ULTIMATE V6</title>
+    <title>SwiftBit Quest ULTIMATE V6 PRO</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root { --primary: #ffc300; --bg: #000814; --card: rgba(255,255,255,0.08); }
@@ -19,7 +19,7 @@
         #coin { width: 200px; height: 200px; cursor: pointer; transition: transform 0.05s; filter: drop-shadow(0 0 20px var(--primary)); margin: 30px auto; }
         #coin:active { transform: scale(0.92); }
         .energy-bar { height: 18px; background: #333; border-radius: 10px; border: 2px solid #fff; overflow: hidden; width: 85%; margin: 10px auto; }
-        #energy-inner { width: 100%; height: 100%; background: linear-gradient(90deg, #ff0054, #ffbd00); transition: width 0.3s; }
+        #energy-inner { height: 100%; background: linear-gradient(90deg, #ff0054, #ffbd00); transition: width 0.3s; }
         #nav-bar { position: fixed; bottom: 0; width: 100%; height: 70px; background: #001529; display: flex; justify-content: space-around; align-items: center; border-top: 2px solid var(--primary); z-index: 100; }
         .nav-item { color: #888; cursor: pointer; font-size: 10px; display: flex; flex-direction: column; }
         .nav-item.active { color: var(--primary); font-weight: bold; }
@@ -28,7 +28,8 @@
     </style>
 </head>
 <body>
-    <div class="marquee"><p>🔥 UNDANG TEMAN: +50.000 Koin! • Admin: @Hamkaharahap • Klaim Bonus Streak Harian & Jackpot Hari ke-7!</p></div>
+    <div class="marquee"><p>🔥 UNDANG TEMAN: +50.000 Koin! • Admin: @Hamkaharahap • Gunakan Auto-Bot & Multi-Tap untuk Cuan Maksimal!</p></div>
+    
     <div id="header">
         <div class="stat-box">💰 <span id="score">0</span></div>
         <div class="stat-box">⚡ <span id="power">1</span>/Tap</div>
@@ -36,8 +37,12 @@
 
     <div id="home" class="page active-page">
         <div id="coin-area"><svg id="coin" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="gold" stroke="#b8860b" stroke-width="4"/><text x="50" y="65" text-anchor="middle" fill="#8b6508" font-size="45" font-weight="bold">$</text></svg></div>
-        <div class="energy-container"><p>⚡ Energi: <span id="energy-text">100</span>/100</p><div class="energy-bar"><div id="energy-inner"></div></div></div>
+        <div class="energy-container">
+            <p>⚡ Energi: <span id="energy-text">100</span>/<span id="max-energy-text">100</span></p>
+            <div class="energy-bar"><div id="energy-inner" style="width: 100%;"></div></div>
+        </div>
         <button class="btn" style="width: 85%; margin-top: 10px;" onclick="claimDaily()">🎁 Klaim Bonus Harian</button>
+        <button class="btn" style="width: 85%; margin-top: 10px; background: #007bff;" onclick="activateAutoBot()">🤖 Aktifkan Auto-Bot (Tonton Iklan)</button>
     </div>
 
     <div id="friends" class="page">
@@ -50,7 +55,11 @@
     </div>
 
     <div id="tasks" class="page">
-        <h2>Tugas Berhadiah</h2>
+        <h2>Tugas & Daily Combo</h2>
+        <div class="card" style="background: #ff8c00; color: black;">
+            <div><h4>Daily Combo Cipher</h4><p>Input Kode Hari Ini</p></div>
+            <button class="btn" onclick="checkDailyCombo()" style="background: white;">Masukan</button>
+        </div>
         <div class="card"><div><h4>Tugas Sponsor 1</h4><p>+5,000 Koin</p></div><button class="btn" onclick="doTask(5000)">Go</button></div>
         <div class="card"><div><h4>Tugas Sponsor 2</h4><p>+10,000 Koin</p></div><button class="btn" onclick="doTask(10000)">Go</button></div>
     </div>
@@ -60,11 +69,13 @@
         <div class="stat-box" style="margin-bottom: 20px;">Estimasi Saldo: <br><b id="money" style="font-size: 24px;">Rp 0</b></div>
         <div class="card"><div><h4>DANA / OVO</h4><p>Min. 1 Juta Koin</p></div><button class="btn" onclick="requestWD('E-Wallet')">Tukar</button></div>
         <div class="card"><div><h4>PayPal</h4><p>Min. 5 Juta Koin</p></div><button class="btn" onclick="requestWD('PayPal')">Tukar</button></div>
+        <button class="btn" style="width: 100%; margin-top: 20px; background: #6f42c1;" onclick="alert('Leaderboard Update: Menghubungkan ke Server...')">🏆 LEADERBOARD GLOBAL</button>
     </div>
 
     <div id="shop" class="page">
         <h2>Toko Upgrade</h2>
         <div class="card"><div><h4>Multi-Tap</h4><p>Harga: <span id="upgrade-cost">100</span></p></div><button class="btn" onclick="buyUpgrade()">Beli</button></div>
+        <div class="card"><div><h4>Max Energy</h4><p>Harga: <span id="energy-cost">500</span></p></div><button class="btn" onclick="buyEnergyUpgrade()">Beli</button></div>
     </div>
 
     <div id="nav-bar">
@@ -82,8 +93,10 @@
         let score = parseInt(localStorage.getItem('sb_score')) || 0;
         let tapPower = parseInt(localStorage.getItem('sb_power')) || 1;
         let upgradeCost = parseInt(localStorage.getItem('sb_cost')) || 100;
+        let energyCost = parseInt(localStorage.getItem('sb_energy_cost')) || 500;
+        let maxEnergy = parseInt(localStorage.getItem('sb_max_energy')) || 100;
         let fCount = parseInt(localStorage.getItem('sb_friends')) || 0;
-        let energy = 100;
+        let energy = maxEnergy;
 
         function showPage(pageId, element) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
@@ -96,34 +109,70 @@
             document.getElementById('score').innerText = score.toLocaleString();
             document.getElementById('power').innerText = tapPower;
             document.getElementById('energy-text').innerText = Math.floor(energy);
-            document.getElementById('energy-inner').style.width = energy + "%";
+            document.getElementById('max-energy-text').innerText = maxEnergy;
+            document.getElementById('energy-inner').style.width = (energy / maxEnergy * 100) + "%";
             document.getElementById('upgrade-cost').innerText = upgradeCost.toLocaleString();
+            document.getElementById('energy-cost').innerText = energyCost.toLocaleString();
             document.getElementById('friend-count').innerText = fCount;
             document.getElementById('money').innerText = "Rp " + Math.floor(score / 100).toLocaleString();
             
             localStorage.setItem('sb_score', score);
             localStorage.setItem('sb_power', tapPower);
             localStorage.setItem('sb_cost', upgradeCost);
+            localStorage.setItem('sb_energy_cost', energyCost);
+            localStorage.setItem('sb_max_energy', maxEnergy);
             localStorage.setItem('sb_friends', fCount);
         }
 
-        setInterval(() => { if (energy < 100) { energy = Math.min(100, energy + 0.4); updateDisplay(); } }, 1000);
+        // Pemulihan Energi
+        setInterval(() => { if (energy < maxEnergy) { energy = Math.min(maxEnergy, energy + (maxEnergy * 0.005)); updateDisplay(); } }, 1000);
 
         document.getElementById('coin').onclick = (e) => {
-            if (energy >= 1) {
-                score += tapPower; energy--; updateDisplay();
+            if (energy >= tapPower) {
+                score += tapPower; energy -= tapPower; updateDisplay();
                 tg.HapticFeedback.impactOccurred('light');
             } else {
-                tg.showConfirm("Energi habis! Tonton iklan?", (ok) => { if (ok) { tg.openLink("https://otieu.com/4/10374339"); energy = 100; updateDisplay(); } });
+                tg.showConfirm("Energi habis! Tonton iklan?", (ok) => { if (ok) { tg.openLink("https://otieu.com/4/10374339"); energy = maxEnergy; updateDisplay(); } });
             }
         };
 
+        function buyUpgrade() {
+            if (score >= upgradeCost) { score -= upgradeCost; tapPower++; upgradeCost *= 2; updateDisplay(); }
+            else tg.showAlert("Koin kurang!");
+        }
+
+        function buyEnergyUpgrade() {
+            if (score >= energyCost) { score -= energyCost; maxEnergy += 50; energyCost *= 2; updateDisplay(); }
+            else tg.showAlert("Koin kurang!");
+        }
+
+        function activateAutoBot() {
+            tg.showConfirm("Aktifkan Auto-Bot selama 60 detik dengan menonton iklan?", (ok) => {
+                if(ok) {
+                    tg.openLink("https://otieu.com/4/10374339");
+                    tg.showAlert("Auto-Bot Aktif!");
+                    let botLife = 60;
+                    let botInt = setInterval(() => {
+                        if (botLife > 0 && energy >= tapPower) {
+                            score += tapPower; energy -= tapPower; updateDisplay();
+                            botLife--;
+                        } else { clearInterval(botInt); }
+                    }, 1000);
+                }
+            });
+        }
+
+        function checkDailyCombo() {
+            let code = prompt("Masukkan Kode Cipher Hari Ini:");
+            if (code === "2025") { score += 100000; updateDisplay(); tg.showAlert("Combo Berhasil! +100.000 Koin"); }
+            else { tg.showAlert("Kode Salah!"); }
+        }
+
         function inviteFriend() {
             const botUrl = "https://t.me/swiftbit_quest_bot"; 
-            const shareText = "Main SwiftBit Quest yuk! Dapetin saldo DANA gratis cuma modal tap tap layar.";
+            const shareText = "Main SwiftBit Quest yuk! Dapetin saldo DANA gratis.";
             tg.openTelegramLink(`https://t.me/share/url?url=${botUrl}&text=${shareText}`);
             fCount++; score += 50000; updateDisplay();
-            tg.showAlert("Bonus Referral +50.000 Koin Berhasil!");
         }
 
         function claimDaily() {
@@ -131,7 +180,7 @@
             const last = parseInt(localStorage.getItem('sb_last')) || 0;
             let streak = parseInt(localStorage.getItem('sb_streak')) || 0;
             if (now - last < 86400000) { tg.showAlert("Kembali besok!"); return; }
-            if (now - last > 172800000) streak = 1; else streak = (streak % 7) + 1;
+            streak = (now - last > 172800000) ? 1 : (streak % 7) + 1;
             let reward = streak === 7 ? 50000 : streak * 5000;
             score += reward; localStorage.setItem('sb_last', now); localStorage.setItem('sb_streak', streak);
             updateDisplay(); tg.showAlert(`Klaim Hari ke-${streak}: +${reward.toLocaleString()} Koin!`);
@@ -143,11 +192,6 @@
             const min = m === 'PayPal' ? 5000000 : 1000000;
             if (score >= min) tg.showAlert(`Berhasil! Silakan chat Admin @Hamkaharahap.`);
             else tg.showAlert(`Min. ${min.toLocaleString()} koin untuk ${m}!`);
-        }
-
-        function buyUpgrade() {
-            if (score >= upgradeCost) { score -= upgradeCost; tapPower++; upgradeCost *= 2; updateDisplay(); }
-            else tg.showAlert("Koin kurang!");
         }
 
         updateDisplay();

@@ -239,35 +239,12 @@
         }
 
     function claimDaily() {
-    const today = new Date().toISOString().slice(0, 10);
-    const hasClaimed = localStorage.getItem('sb_claimed_' + today);
-
-    if (hasClaimed === 'true') {
-        tg.showAlert("⚠️ Bonus SUDAH diambil hari ini! Kembali lagi besok.");
-        return; // Hentikan fungsi di sini agar score tidak bertambah
-    }
-
-    // Jika belum klaim:
-    score += 10000;
-    localStorage.setItem('sb_score', score); // Paksa simpan skor ke memori
-    localStorage.setItem('sb_claimed_' + today, 'true'); // Kunci status hari ini
-    
-    updateDisplay(); // Perbarui tampilan koin di layar
-    tg.showAlert("✅ Berhasil! Bonus +10.000 Koin ditambahkan.");
-    
-    if (typeof saveUserData === "function") saveUserData();
-}
-
-    // Jika belum klaim:
-    score += 10000;
-    localStorage.setItem('sb_score', score); // Paksa simpan skor ke memori
-    localStorage.setItem('sb_claimed_' + today, 'true'); // Kunci status hari ini
-    
-    updateDisplay(); // Perbarui tampilan koin di layar
-    tg.showAlert("✅ Berhasil! Bonus +10.000 Koin ditambahkan.");
-    
-    if (typeof saveUserData === "function") saveUserData();
-}    
+            const now = new Date().getTime();
+            const last = parseInt(localStorage.getItem('sb_last')) || 0;
+            if (now - last < 86400000) { tg.showAlert("Kembali besok!"); return; }
+            score += 10000; localStorage.setItem('sb_last', now);
+            updateDisplay(); tg.showAlert("Bonus Harian +10.000!");
+        }
 
         function connectWallet() {
             const btn = document.getElementById('connect-btn');

@@ -84,14 +84,38 @@
     </div>
 
     <div id="shop" class="page">
-        <h2>🛒 Toko & Booster ⚡</h2>
-        <div class="card"><div><h4>Multi-Tap</h4><p>Harga: <span id="upgrade-cost">100</span></p></div><button class="btn" onclick="buyUpgrade()">Beli</button></div>
-        <div class="card"><div><h4>Max Energy</h4><p>Harga: <span id="energy-cost">500</span></p></div><button class="btn" onclick="buyEnergyUpgrade()">Beli</button></div>
-        <div class="card" style="border-left: 4px solid #ff0054;">
-            <div><h4>Full Tank Booster</h4><p>Isi Instan Energi (5x/Hari)</p></div>
-            <button class="btn" style="background: #ff0054; color: white;" onclick="useBooster()">Gunakan</button>
+    <h2>🛒 Toko & Booster ⚡</h2>
+    
+    <div class="card">
+        <div>
+            <h4>Multi-Tap</h4>
+            <p>Harga: <span id="upgrade-cost">100</span></p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+            <button class="btn" onclick="buyUpgrade()">Beli</button>
+            <button class="btn" style="background: #0088cc; font-size: 0.8em; padding: 5px 10px;" onclick="payWithStars('multiTap', 50)">⭐️ 50 Stars</button>
         </div>
     </div>
+
+    <div class="card">
+        <div>
+            <h4>Max Energy</h4>
+            <p>Harga: <span id="energy-cost">500</span></p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+            <button class="btn" onclick="buyEnergyUpgrade()">Beli</button>
+            <button class="btn" style="background: #0088cc; font-size: 0.8em; padding: 5px 10px;" onclick="payWithStars('maxEnergy', 100)">⭐️ 100 Stars</button>
+        </div>
+    </div>
+
+    <div class="card" style="border-left: 4px solid #ff0054;">
+        <div>
+            <h4>Full Tank Booster</h4>
+            <p>Isi Instan Energi (5x/Hari)</p>
+        </div>
+        <button class="btn" style="background: #ff0054; color: white;" onclick="useBooster()">Gunakan</button>
+    </div>
+</div>
 
     <div id="nav-bar">
         <div class="nav-item active" onclick="showPage('home', this)"><span>🏠</span>Home</div>

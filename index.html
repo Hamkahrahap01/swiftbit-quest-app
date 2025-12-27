@@ -270,38 +270,38 @@ function payWithStars(item, price) {
         }
     });
 }
-       // TEMPELKAN DI BARIS 246 (Di bawah fungsi payWithStars)
-const canvas = document.getElementById('wheelCanvas');
-const ctx = canvas.getContext('2d');
-const prizes = ["10K", "50K", "ZONK", "100K", "ENERGY", "JACKPOT"];
-const colors = ["#003566", "#001d3d", "#003566", "#001d3d", "#003566", "#ffc300"];
-
-function drawWheel() {
-    const arc = (2 * Math.PI) / prizes.length;
-    prizes.forEach((prize, i) => {
-        ctx.beginPath(); ctx.fillStyle = colors[i];
-        ctx.moveTo(150, 150); ctx.arc(150, 150, 150, i * arc, (i + 1) * arc);
-        ctx.fill(); ctx.save(); ctx.translate(150, 150);
-        ctx.rotate(i * arc + arc / 2); ctx.fillStyle = "white";
-        ctx.font = "bold 16px Arial"; ctx.fillText(prize, 70, 5); ctx.restore();
-    });
-}
-drawWheel();
-
-function spinWheel() {
+       function spinWheel() {
+    if (isSpinning) return;
+    isSpinning = true;
     let rotation = 0;
     const targetRotation = 360 * 5 + Math.random() * 360;
+    
     const interval = setInterval(() => {
-        rotation += 20; canvas.style.transform = `rotate(${rotation}deg)`;
+        rotation += 20;
+        canvas.style.transform = `rotate(${rotation}deg)`;
+        
         if (rotation >= targetRotation) {
             clearInterval(interval);
+            isSpinning = false;
+            
             const winIndex = Math.floor(((360 - (targetRotation % 360)) / 60) % prizes.length);
-            tg.showAlert("Selamat! Hadiah Anda: " + prizes[winIndex]);
-            if(prizes[winIndex] === "100K") score += 100000;
-            updateDisplay();
+            const reward = prizes[winIndex];
+            
+            tg.showAlert("Selamat! Hadiah Anda: " + reward);
+            
+            // LOGIKA PENAMBAHAN HADIAH
+            if (reward === "10K") score += 10000;
+            else if (reward === "50K") score += 50000;
+            else if (reward === "100K") score += 100000;
+            else if (reward === "JACKPOT") score += 500000;
+            else if (reward === "ENERGY") energy = maxEnergy;
+
+            // WAJIB DIPANGGIL AGAR SALDO BERUBAH
+            updateDisplay(); 
+            if (typeof saveUserData === "function") saveUserData(); // Kirim ke Railway
         }
     }, 20);
-} 
+}
         function doSocialTask(l, r) { tg.openLink(l); setTimeout(() => { score += r; updateDisplay(); tg.showAlert("Bonus +" + r + "!"); }, 5000); }
         function buyUpgrade() { if (score >= upgradeCost) { score -= upgradeCost; tapPower++; upgradeCost *= 2; updateDisplay(); } }
         function buyEnergyUpgrade() { if (score >= energyCost) { score -= energyCost; maxEnergy += 50; energyCost *= 2; updateDisplay(); } }

@@ -231,5 +231,23 @@
             if(w) { const b = document.getElementById('connect-btn'); b.innerText = "✅ " + w; b.style.background = "#00ff00"; }
         };
     </script>
+    <script>
+function createCoin() {
+    const coin = document.createElement('div');
+    coin.innerHTML = '💰';
+    coin.style.position = 'fixed';
+    coin.style.top = '-50px';
+    coin.style.left = Math.random() * window.innerWidth + 'px';
+    coin.style.fontSize = '24px';
+    coin.style.zIndex = '999';
+    coin.style.transition = 'transform 3s linear';
+    document.body.appendChild(coin);
+    setTimeout(() => {
+        coin.style.transform = `translateY(${window.innerHeight + 100}px) rotate(${Math.random() * 360}deg)`;
+    }, 100);
+    setTimeout(() => { coin.remove(); }, 4000);
+}
+setInterval(createCoin, 500);
+</script>
 </body>
 </html>

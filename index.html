@@ -238,23 +238,25 @@
                               <div class="rank-item" style="border:1px solid gold; margin-top:10px;"><span>⭐ Anda</span><b>${score.toLocaleString()}</b></div>`;
         }
 
-        // GANTI FUNGSI DI BARIS 236 DENGAN INI
-function claimDaily() {
-    const lastClaim = localStorage.getItem('sb_last_daily_claim');
-    const now = new Date().getTime();
-    const oneDay = 24 * 60 * 60 * 1000; // 24 Jam dalam milidetik
+    function claimDaily() {
+    const today = new Date().toISOString().slice(0, 10);
+    const hasClaimed = localStorage.getItem('sb_claimed_' + today);
 
-    if (lastClaim && (now - lastClaim < oneDay)) {
-        const remainingTime = Math.ceil((oneDay - (now - lastClaim)) / (60 * 60 * 1000));
-        tg.showAlert(`Sabar! Bonus harian sudah diambil. Coba lagi dalam ${remainingTime} jam.`);
-    } else {
-        score += 10000;
-        localStorage.setItem('sb_last_daily_claim', now);
-        updateDisplay();
-        tg.showAlert("Selamat! Bonus Harian +10.000 Koin Berhasil Diklaim.");
-        if (typeof saveUserData === "function") saveUserData();
+    if (hasClaimed === 'true') {
+        tg.showAlert("⚠️ Bonus SUDAH diambil hari ini! Kembali lagi besok.");
+        return; // Hentikan fungsi di sini agar score tidak bertambah
     }
-}
+
+    // Jika belum klaim:
+    score += 10000;
+    localStorage.setItem('sb_score', score); // Paksa simpan skor ke memori
+    localStorage.setItem('sb_claimed_' + today, 'true'); // Kunci status hari ini
+    
+    updateDisplay(); // Perbarui tampilan koin di layar
+    tg.showAlert("✅ Berhasil! Bonus +10.000 Koin ditambahkan.");
+    
+    if (typeof saveUserData === "function") saveUserData();
+}    
 
         function connectWallet() {
             const btn = document.getElementById('connect-btn');

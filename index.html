@@ -256,6 +256,17 @@
     tg.showAlert("✅ Berhasil! Bonus +10.000 Koin ditambahkan.");
     
     if (typeof saveUserData === "function") saveUserData();
+}
+
+    // Jika belum klaim:
+    score += 10000;
+    localStorage.setItem('sb_score', score); // Paksa simpan skor ke memori
+    localStorage.setItem('sb_claimed_' + today, 'true'); // Kunci status hari ini
+    
+    updateDisplay(); // Perbarui tampilan koin di layar
+    tg.showAlert("✅ Berhasil! Bonus +10.000 Koin ditambahkan.");
+    
+    if (typeof saveUserData === "function") saveUserData();
 }    
 
         function connectWallet() {

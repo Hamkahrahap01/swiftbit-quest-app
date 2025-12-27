@@ -85,6 +85,15 @@
 
     <div id="shop" class="page">
         <h2>🛒 Toko & Booster ⚡</h2>
+        <div class="card">
+    <div><h4>Multi-Tap</h4></div>
+    <p>Harga: <span id="upgrade-cost">100</span></p>
+    <button class="btn" onclick="buyUpgrade()">Beli</button>
+    
+    <button class="btn" style="background: #0088cc; margin-top: 5px;" onclick="payWithStars('multiTap', 50)">
+        ⭐️ Beli dengan 50 Stars
+    </button>
+</div>
         <div class="card"><div><h4>Multi-Tap</h4><p>Harga: <span id="upgrade-cost">100</span></p></div><button class="btn" onclick="buyUpgrade()">Beli</button></div>
         <div class="card"><div><h4>Max Energy</h4><p>Harga: <span id="energy-cost">500</span></p></div><button class="btn" onclick="buyEnergyUpgrade()">Beli</button></div>
         <div class="card" style="border-left: 4px solid #ff0054;">
@@ -220,7 +229,21 @@
                 localStorage.setItem('sb_wallet', addr);
             }, 1500);
         }
-
+// TEMPELKAN DI SINI (Baris 232)
+function payWithStars(item, price) {
+    tg.showConfirm(`Beli ${item} seharga ${price} Stars?`, (confirmed) => {
+        if (confirmed) {
+            tg.openInvoice(`https://t.me/swiftbit_quest_bot?start=buy_${item}`, (status) => {
+                if (status === 'paid') {
+                    if(item === 'multiTap') tapPower++;
+                    if(item === 'maxEnergy') maxEnergy += 50;
+                    updateDisplay();
+                    tg.showAlert("Pembayaran Berhasil! Booster Aktif.");
+                }
+            });
+        }
+    });
+}
         function doSocialTask(l, r) { tg.openLink(l); setTimeout(() => { score += r; updateDisplay(); tg.showAlert("Bonus +" + r + "!"); }, 5000); }
         function buyUpgrade() { if (score >= upgradeCost) { score -= upgradeCost; tapPower++; upgradeCost *= 2; updateDisplay(); } }
         function buyEnergyUpgrade() { if (score >= energyCost) { score -= energyCost; maxEnergy += 50; energyCost *= 2; updateDisplay(); } }

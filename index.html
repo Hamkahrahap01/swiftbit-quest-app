@@ -270,37 +270,68 @@ function payWithStars(item, price) {
         }
     });
 }
-       function spinWheel() {
+        // Inisialisasi variabel di luar agar bisa diakses semua fungsi
+let isSpinning = false;
+const canvas = document.getElementById('wheelCanvas');
+const ctx = canvas.getContext('2d');
+const prizes = ["10K", "50K", "ZONK", "100K", "ENERGY", "JACKPOT"];
+const colors = ["#003566", "#001d3d", "#003566", "#001d3d", "#003566", "#ffc300"];
+
+function drawWheel() {
+    if (!canvas) return;
+    const arc = (2 * Math.PI) / prizes.length;
+    ctx.clearRect(0, 0, 300, 300); // Bersihkan canvas sebelum gambar ulang
+    prizes.forEach((prize, i) => {
+        ctx.beginPath();
+        ctx.fillStyle = colors[i];
+        ctx.moveTo(150, 150);
+        ctx.arc(150, 150, 150, i * arc, (i + 1) * arc);
+        ctx.fill();
+        ctx.save();
+        ctx.translate(150, 150);
+        ctx.rotate(i * arc + arc / 2);
+        ctx.fillStyle = "white";
+        ctx.font = "bold 16px Arial";
+        ctx.textAlign = "right";
+        ctx.fillText(prize, 130, 10);
+        ctx.restore();
+    });
+}
+
+// Panggil fungsi gambar segera setelah skrip dimuat
+drawWheel();
+
+function spinWheel() {
     if (isSpinning) return;
     isSpinning = true;
-    let rotation = 0;
-    const targetRotation = 360 * 5 + Math.random() * 360;
     
-    const interval = setInterval(() => {
-        rotation += 20;
-        canvas.style.transform = `rotate(${rotation}deg)`;
+    let currentRotation = 0;
+    const extraSpins = 5; // Putaran tambahan agar terlihat cepat
+    const randomDegree = Math.floor(Math.random() * 360);
+    const totalRotation = (extraSpins * 360) + randomDegree;
+    
+    canvas.style.transition = "transform 4s cubic-bezier(0.17, 0.67, 0.83, 0.67)";
+    canvas.style.transform = `rotate(${totalRotation}deg)`;
+    
+    setTimeout(() => {
+        isSpinning = false;
+        // Hitung hasil berdasarkan rotasi terakhir
+        const actualDegree = randomDegree % 360;
+        const winIndex = Math.floor(((360 - actualDegree) / 60) % prizes.length);
+        const reward = prizes[winIndex];
         
-        if (rotation >= targetRotation) {
-            clearInterval(interval);
-            isSpinning = false;
-            
-            const winIndex = Math.floor(((360 - (targetRotation % 360)) / 60) % prizes.length);
-            const reward = prizes[winIndex];
-            
-            tg.showAlert("Selamat! Hadiah Anda: " + reward);
-            
-            // LOGIKA PENAMBAHAN HADIAH
-            if (reward === "10K") score += 10000;
-            else if (reward === "50K") score += 50000;
-            else if (reward === "100K") score += 100000;
-            else if (reward === "JACKPOT") score += 500000;
-            else if (reward === "ENERGY") energy = maxEnergy;
+        tg.showAlert("Selamat! Hadiah Anda: " + reward);
+        
+        if (reward === "10K") score += 10000;
+        else if (reward === "50K") score += 50000;
+        else if (reward === "100K") score += 100000;
+        else if (reward === "JACKPOT") score += 500000;
+        else if (reward === "ENERGY") energy = maxEnergy;
 
-            // WAJIB DIPANGGIL AGAR SALDO BERUBAH
-            updateDisplay(); 
-            if (typeof saveUserData === "function") saveUserData(); // Kirim ke Railway
-        }
-    }, 20);
+        updateDisplay();
+        canvas.style.transition = "none"; // Reset transisi
+        canvas.style.transform = `rotate(${actualDegree}deg)`;
+    }, 4000); // Sesuai durasi transisi 4 detik
 }
         function doSocialTask(l, r) { tg.openLink(l); setTimeout(() => { score += r; updateDisplay(); tg.showAlert("Bonus +" + r + "!"); }, 5000); }
         function buyUpgrade() { if (score >= upgradeCost) { score -= upgradeCost; tapPower++; upgradeCost *= 2; updateDisplay(); } }

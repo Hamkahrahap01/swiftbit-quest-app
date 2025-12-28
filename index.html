@@ -338,5 +338,60 @@
         }
         setInterval(createCoin, 1500);
     </script>
+    <style>
+    #monetagModal {
+        display: none; 
+        position: fixed; 
+        z-index: 9999; 
+        left: 0; top: 0; width: 100%; height: 100%; 
+        background-color: rgba(0,0,0,0.8);
+        backdrop-filter: blur(5px);
+    }
+    .modal-content {
+        background: linear-gradient(135deg, #1a1a2e, #16213e);
+        margin: 15% auto; 
+        padding: 25px; 
+        border: 2px solid #00d4ff; 
+        width: 80%; 
+        max-width: 400px;
+        text-align: center;
+        border-radius: 20px;
+        box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        position: relative;
+    }
+    .close-btn {
+        position: absolute; top: 10px; right: 15px;
+        color: #fff; font-size: 24px; cursor: pointer;
+    }
+</style>
+
+<div id="monetagModal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h2 style="color: #ffd700;">🎁 Bonus Spesial!</h2>
+        <p style="color: #fff; font-size: 14px;">Dukung SwiftBit & Klaim 50.000 Koin Gratis dengan mengunjungi mitra kami hari ini!</p>
+        <br>
+        <a href="https://monetag.com/?ref_id=zOKe" target="_blank" onclick="closeModal()"
+           style="display: block; padding: 15px; background: #00d4ff; color: #000; font-weight: bold; border-radius: 10px; text-decoration: none;">
+           AMBIL BONUS SEKARANG 🚀
+        </a>
+    </div>
+</div>
+
+<script>
+    window.onload = function() {
+        const lastSeen = localStorage.getItem('monetagPopupDate');
+        const today = new Date().toDateString();
+
+        if (lastSeen !== today) {
+            document.getElementById('monetagModal').style.display = 'block';
+        }
+    };
+
+    function closeModal() {
+        document.getElementById('monetagModal').style.display = 'none';
+        localStorage.setItem('monetagPopupDate', new Date().toDateString());
+    }
+</script>
 </body>
 </html>

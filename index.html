@@ -1,43 +1,46 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta name="google-site-verification" content="8xH9nGXIIgQ7PxWILkVZR1loji6_bye7MhJI3WEhh3g" />
+    <meta name="verifikasi-situs-google" content="8xH9nGXIIgQ7PxWILkVZR1loji6_bye7MhJI3WEhh3g" />
     <script src="https://quge5.com/88/tag.min.js" data-zone="195898" async data-cfasync="false"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SwiftBit Quest ULTIMATE V6 PRO FINAL</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root { --primary: #ffc300; --bg: #000814; --card: rgba(255,255,255,0.08); }
+        :root { --primer: #ffc300; --bg: #000814; --kartu: rgba(255,255,255,0.08); }
         body { background: radial-gradient(circle, #001d3d 0%, var(--bg) 100%); color: white; text-align: center; font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 80px; user-select: none; overflow-x: hidden; }
-        .marquee { background: var(--primary); color: black; font-weight: bold; padding: 5px 0; overflow: hidden; white-space: nowrap; position: sticky; top: 0; z-index: 20; font-size: 13px; }
-        .marquee p { display: inline-block; padding-left: 100%; animation: marquee 15s linear infinite; margin: 0; }
-        @keyframes marquee { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
-        #header { padding: 15px; display: flex; flex-direction: column; gap: 10px; background: var(--card); border-bottom: 1px solid var(--primary); }
-        .stat-row { display: flex; justify-content: space-around; }
-        .stat-box { background: rgba(0,0,0,0.6); padding: 8px 15px; border-radius: 12px; border: 1px solid var(--primary); min-width: 80px; }
-        .page { display: none; padding: 20px; animation: slideUp 0.3s ease-out; }
-        .active-page { display: block; }
+        .marquee { background: var(--primer); color: black; font-weight: bold; padding: 5px 0; overflow: hidden; white-space: nowrap; position: sticky; top: 0; z-index: 20; font-size: 13px; }
+        .marquee p { display: inline-block; padding-left: 100%; animation: tenda 15s linear infinite; margin: 0; }
+        @keyframes tenda { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
+        #header { padding: 15px; display: flex; flex-direction: column; gap: 10px; background: var(--kartu); border-bottom: 1px solid var(--primer); }
+        .stat-baris { display: flex; justify-content: space-around; padding: 10px; }
+        .stat-box { background: rgba(0,0,0,0.6); padding: 8px 15px; border-radius: 12px; border: 1px solid var(--primer); min-width: 80px; }
+        .page { display: none; padding: 20px; animation: slideUp 0.3s ease; }
+        .active-page { display: block !important; }
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        #coin { width: 170px; height: 170px; cursor: pointer; transition: transform 0.05s; filter: drop-shadow(0 0 20px var(--primary)); margin: 20px auto; }
+        #coin { width: 170px; height: 170px; cursor: pointer; transition: transform 0.05s; filter: drop-shadow(0 0 20px var(--primer)); margin: 20px auto; }
         #coin:active { transform: scale(0.92); }
         .energy-bar { height: 18px; background: #333; border-radius: 10px; border: 2px solid #fff; overflow: hidden; width: 85%; margin: 10px auto; }
         #energy-inner { height: 100%; background: linear-gradient(90deg, #ff0054, #ffbd00); transition: width 0.3s; }
-        #nav-bar { position: fixed; bottom: 0; width: 100%; height: 70px; background: #001529; display: flex; justify-content: space-around; align-items: center; border-top: 2px solid var(--primary); z-index: 100; }
+        #nav-bar { position: fixed; bottom: 0; width: 100%; height: 70px; background: #001529; display: flex; justify-content: space-around; align-items: center; border-top: 2px solid var(--primer); z-index: 100; }
         .nav-item { color: #888; cursor: pointer; font-size: 10px; display: flex; flex-direction: column; }
-        .nav-item.active { color: var(--primary); font-weight: bold; }
-        .card { background: var(--card); padding: 15px; border-radius: 16px; margin-bottom: 12px; text-align: left; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid var(--primary); }
-        .btn { background: var(--primary); color: black; border: none; padding: 10px 18px; border-radius: 10px; font-weight: bold; cursor: pointer; }
-        .rank-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .nav-item.active { color: var(--primer); font-weight: bold; }
+        .card { background: var(--kartu); padding: 15px; border-radius: 16px; margin-bottom: 12px; text-align: left; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid var(--primer); }
+        .btn { background: var(--primer); color: black; border: none; padding: 10px 18px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        
+        /* CSS Tambahan Visual Streak */
+        .day-circle { width: 35px; height: 35px; border-radius: 50%; background: #444; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; color: white; transition: 0.3s; }
+        .day-active { background: #ffc300; color: black; box-shadow: 0 0 10px #ffc300; border: 2px solid white; }
     </style>
 </head>
 <body>
-    <div class="marquee"><p>🔥 UNDANG TEMAN: +50.000 Koin! • Admin: @Hamkaharahap • Gunakan Auto-Bot & Hubungkan Wallet!</p></div>
+    <div class="marquee"><p>🔥 UNDANG TEMAN: +50.000 Koin! • Admin: @Hamkaharahap • Gunakan Auto-Bot & Hubungkan Dompet!</p></div>
     
     <div id="header">
-        <div class="stat-row">
+        <div class="stat-baris">
             <div class="stat-box">💰 <span id="score">0</span></div>
-            <div class="stat-box">⭐ <span id="user-level">BRONZE</span></div>
+            <div class="stat-box">⭐ <span id="user-level">PERUNGGU</span></div>
         </div>
         <button id="connect-btn" class="btn" style="width: 100%; background: linear-gradient(45deg, #3a86ff, #8338ec); color: white;" onclick="connectWallet()">🔗 Hubungkan Dompet Web3</button>
     </div>
@@ -48,25 +51,34 @@
             <p>⚡ Energi: <span id="energy-text">100</span>/<span id="max-energy-text">100</span></p>
             <div class="energy-bar"><div id="energy-inner" style="width: 100%;"></div></div>
         </div>
+
+        <div id="streak-container" style="display: flex; justify-content: space-around; margin: 15px auto; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 10px; width: 85%;">
+            <div class="day-circle" id="day1">1</div>
+            <div class="day-circle" id="day2">2</div>
+            <div class="day-circle" id="day3">3</div>
+            <div class="day-circle" id="day4">4</div>
+            <div class="day-circle" id="day5">5</div>
+            <div class="day-circle" id="day6">6</div>
+            <div class="day-circle" id="day7">🎁</div>
+        </div>
+
         <button class="btn" style="width: 85%; margin-top: 10px;" onclick="claimDaily()">🎁 Klaim Bonus Harian</button>
         <button class="btn" style="width: 85%; margin-top: 10px; background: #007bff;" onclick="activateAutoBot()">🤖 Aktifkan Auto-Bot (Iklan)</button>
-        <a href="wiki.html" style="display: block; width: 85%; margin: 10px auto; padding: 10px; text-align: center; text-decoration: none; background: #ffc300; color: black; border-radius: 10px; font-weight: bold;" class="btn-glow">
-    📚 Panduan Wiki & Tips Cuan
-</a>
+        <a href="wiki.html" style="display: block; width: 85%; margin: 10px auto; padding: 10px; text-decoration: none; background: #ffc300; color: black; border-radius: 10px; font-weight: bold;">📚 Panduan Wiki & Tips Cuan</a>
     </div>
 
     <div id="tasks" class="page">
-        <h2>📋 Tugas & Referral</h2>
+        <h2>📋 Tugas & Referensi</h2>
         <div class="card" style="border-left: 4px solid #00ff00;">
             <div><h4>Undang Teman</h4><p>+50,000 Koin</p></div>
             <button class="btn" onclick="inviteFriend()">Undang</button>
         </div>
         <div class="card">
-            <div><h4>Follow Channel Admin</h4><p>+25,000 Koin</p></div>
-            <button class="btn" onclick="doSocialTask('https://t.me/your_channel', 25000)">Go</button>
+            <div><h4>Ikuti Admin Saluran</h4><p>+25.000 Koin</p></div>
+            <button class="btn" onclick="doSocialTask('https://t.me/your_channel', 25000)">Mulai</button>
         </div>
         <div class="card" style="background: #ff8c00; color: black;">
-            <div><h4>Daily Combo Cipher</h4><p>Input Kode Rahasia</p></div>
+            <div><h4>Cipher Kombo Harian</h4><p>Masukkan Kode Rahasia</p></div>
             <button class="btn" onclick="checkDailyCombo()" style="background: white;">Masukan</button>
         </div>
     </div>
@@ -84,57 +96,47 @@
     </div>
 
     <div id="shop" class="page">
-    <h2>🛒 Toko & Booster ⚡</h2>
-    
-    <div class="card">
-        <div>
-            <h4>Multi-Tap</h4>
-            <p>Harga: <span id="upgrade-cost">100</span></p>
+        <h2>🛒 Toko & Booster ⚡</h2>
+        <div class="card">
+            <div><h4>Multi-Ketuk</h4><p>Harga: <span id="upgrade-cost">100</span></p></div>
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <button class="btn" onclick="buyUpgrade()">Beli</button>
+                <button class="btn" style="background: #0088cc; font-size: 0.8em; padding: 5px 10px;" onclick="payWithStars('multiTap', 50)">⭐️ 50 Bintang</button>
+            </div>
         </div>
-        <div style="display: flex; flex-direction: column; gap: 5px;">
-            <button class="btn" onclick="buyUpgrade()">Beli</button>
-            <button class="btn" style="background: #0088cc; font-size: 0.8em; padding: 5px 10px;" onclick="payWithStars('multiTap', 50)">⭐️ 50 Stars</button>
+        <div class="card">
+            <div><h4>Energi Maks</h4><p>Harga: <span id="energy-cost">500</span></p></div>
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <button class="btn" onclick="buyEnergyUpgrade()">Beli</button>
+                <button class="btn" style="background: #0088cc; font-size: 0.8em; padding: 5px 10px;" onclick="payWithStars('maxEnergy', 100)">⭐️ 100 Bintang</button>
+            </div>
         </div>
-    </div>
-
-    <div class="card">
-        <div>
-            <h4>Max Energy</h4>
-            <p>Harga: <span id="energy-cost">500</span></p>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 5px;">
-            <button class="btn" onclick="buyEnergyUpgrade()">Beli</button>
-            <button class="btn" style="background: #0088cc; font-size: 0.8em; padding: 5px 10px;" onclick="payWithStars('maxEnergy', 100)">⭐️ 100 Stars</button>
+        <div class="card" style="border-left: 4px solid #ff0054;">
+            <div><h4>Penguat Tangki Penuh</h4><p>Isi Instan Energi (5x/Hari)</p></div>
+            <button class="btn" style="background: #ff0054; color: white;" onclick="useBooster()">Gunakan</button>
         </div>
     </div>
 
-    <div class="card" style="border-left: 4px solid #ff0054;">
-        <div>
-            <h4>Full Tank Booster</h4>
-            <p>Isi Instan Energi (5x/Hari)</p>
+    <div id="roda" class="page">
+        <h2>🎡 Roda Keberuntungan</h2>
+        <div style="text-align: center; position: relative; margin: 20px auto; width: 300px;">
+            <div id="wheel-pointer" style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); z-index: 10; font-size: 30px;">🔻</div>
+            <canvas id="wheelCanvas" width="300" height="300" style="border-radius: 50%; border: 5px solid #ffc300;"></canvas>
         </div>
-        <button class="btn" style="background: #ff0054; color: white;" onclick="useBooster()">Gunakan</button>
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+            <button class="btn" onclick="spinWheel()" id="spin-btn" style="width: 200px; background: #ffc300; color: black;">PUTAR GRATIS (1x)</button>
+            <button class="btn" onclick="payWithStars('extraSpin', 20)" style="width: 200px; background: #0088cc;">⭐️ Putar Lagi (20 Bintang)</button>
+        </div>
     </div>
-</div>
-<div id="wheel" class="page">
-    <h2>🎡 Roda Keberuntungan</h2>
-    <div style="text-align: center; position: relative; margin: 20px auto; width: 300px;">
-        <div id="wheel-pointer" style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); z-index: 10; font-size: 30px;">🔻</div>
-        <canvas id="wheelCanvas" width="300" height="300" style="border-radius: 50%; border: 5px solid #ffc300;"></canvas>
-    </div>
-    <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
-        <button class="btn" onclick="spinWheel()" id="spin-btn" style="width: 200px; background: #ffc300; color: black;">PUTAR GRATIS (1x)</button>
-        <button class="btn" onclick="payWithStars('extraSpin', 20)" style="width: 200px; background: #0088cc;">⭐️ Putar Lagi (20 Stars)</button>
-    </div>
-</div>
+
     <div id="nav-bar">
-        <div class="nav-item active" onclick="showPage('home', this)"><span>🏠</span>Home</div>
-        <div class="nav-item" onclick="showPage('tasks', this)"><span>📋</span>Tasks</div>
-        <div class="nav-item" onclick="tg.openTelegramLink('https://t.me/swiftbit_community')"><span>💬</span>Chat</div>
+        <div class="nav-item active" onclick="showPage('home', this)"><span>🏠</span>Beranda</div>
+        <div class="nav-item" onclick="showPage('tasks', this)"><span>📋</span>Tugas</div>
+        <div class="nav-item" onclick="tg.openTelegramLink('https://t.me/swiftbit_community')"><span>💬</span>Obrolan</div>
         <div class="nav-item" onclick="showPage('withdraw', this)"><span>💸</span>WD</div>
-        <div class="nav-item" onclick="showPage('rank', this)"><span>🏆</span>Rank</div>
-        <div class="nav-item" onclick="showPage('shop', this)"><span>🛒</span>Shop</div>
-        <div class="nav-item" onclick="showPage('wheel', this)"><span>🎡</span>Wheel</div>
+        <div class="nav-item" onclick="showPage('rank', this)"><span>🏆</span>Peringkat</div>
+        <div class="nav-item" onclick="showPage('shop', this)"><span>🛒</span>Belanja</div>
+        <div class="nav-item" onclick="showPage('roda', this)"><span>🎡</span>Roda</div>
     </div>
 
     <script>
@@ -148,7 +150,6 @@
         let energyCost = parseInt(localStorage.getItem('sb_energy_cost')) || 500;
         let maxEnergy = parseInt(localStorage.getItem('sb_max_energy')) || 100;
         let energy = maxEnergy;
-        let dailyBoosterLimit = parseInt(localStorage.getItem('sb_booster_limit')) || 5;
 
         function showPage(pageId, element) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
@@ -159,11 +160,11 @@
         }
 
         function getUserLevel(s) {
-            if (s >= 10000000) return { name: "💎 DIAMOND", color: "#b9f2ff" };
-            if (s >= 5000000) return { name: "🏆 PLATINUM", color: "#e5e4e2" };
-            if (s >= 1000000) return { name: "🥇 GOLD", color: "#ffd700" };
-            if (s >= 100000) return { name: "🥈 SILVER", color: "#c0c0c0" };
-            return { name: "🥉 BRONZE", color: "#cd7f32" };
+            if (s >= 10000000) return { nama: "💎 DIAMOND", warna: "#b9f2ff" };
+            if (s >= 5000000) return { nama: "🏆 PLATINUM", warna: "#e5e4e2" };
+            if (s >= 1000000) return { nama: "🥇 GOLD", warna: "#ffd700" };
+            if (s >= 100000) return { nama: "🥈 SILVER", warna: "#c0c0c0" };
+            return { nama: "🥉 PERUNGGU", warna: "#cd7f32" };
         }
 
         function updateDisplay() {
@@ -177,8 +178,18 @@
             
             const level = getUserLevel(score);
             const levelEl = document.getElementById('user-level');
-            levelEl.innerText = level.name;
-            levelEl.style.color = level.color;
+            levelEl.innerText = level.nama;
+            levelEl.style.color = level.warna;
+
+            // Update Visual Streak
+            let streak = parseInt(localStorage.getItem('sb_streak')) || 0;
+            for (let i = 1; i <= 7; i++) {
+                const el = document.getElementById('day' + i);
+                if (el) {
+                    if (i <= streak) el.classList.add('day-active');
+                    else el.classList.remove('day-active');
+                }
+            }
 
             localStorage.setItem('sb_score', score);
             localStorage.setItem('sb_power', tapPower);
@@ -198,174 +209,134 @@
             }
         };
 
-        async function inviteFriend() {
-            const user = tg.initDataUnsafe.user;
-            if (user) {
-                try {
-                    await fetch(`${RAILWAY_URL}/api/invite`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ userId: user.id, name: user.first_name })
-                    });
-                    score += 50000; updateDisplay();
-                    tg.showAlert("Bonus +50.000! Cek Bot Anda.");
-                } catch (e) {
-                    tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/swiftbit_quest_bot&text=Main yuk!`);
-                    score += 50000; updateDisplay();
-                }
-            }
-        }
-
-        function checkDailyCombo() {
-            const today = new Date().toISOString().slice(0, 10);
-            const dailyCodes = { "2025-12-27": "SWIFT01", "2025-12-28": "TAPGOLD" };
-            const correctCode = dailyCodes[today] || "ADMIN88";
-            let userCode = prompt("Masukkan Kode Cipher Hari Ini:");
-            if (userCode === correctCode) {
-                if (localStorage.getItem('sb_last_combo') === today) {
-                    tg.showAlert("Sudah klaim!");
-                } else {
-                    score += 250000; localStorage.setItem('sb_last_combo', today);
-                    updateDisplay(); tg.showAlert("Bonus +250.000 Berhasil!");
-                }
-            } else tg.showAlert("Kode Salah!");
-        }
-
-        function updateLeaderboard() {
-            const list = document.getElementById('leaderboard-list');
-            list.innerHTML = `<div class="rank-item"><span>🥇 1. Sultan_Cuan</span><b>25.0M</b></div>
-                              <div class="rank-item"><span>🥈 2. Raja_Tap</span><b>18.5M</b></div>
-                              <div class="rank-item" style="border:1px solid gold; margin-top:10px;"><span>⭐ Anda</span><b>${score.toLocaleString()}</b></div>`;
-        }
-
-   function claimDaily() {
+        // KLAIM HARIAN DENGAN LOGIKA STREAK
+        function claimDaily() {
             const now = new Date().getTime();
             const last = parseInt(localStorage.getItem('sb_last')) || 0;
             let streak = parseInt(localStorage.getItem('sb_streak')) || 0;
-            if (now - last < 86400000) { tg.showAlert("Kembali besok!"); return; }
+
+            if (now - last < 86400000) { 
+                tg.showAlert("⚠️ Sudah klaim! Kembali lagi besok."); 
+                return; 
+            }
+
+            // Jika absen > 2 hari, reset streak ke 1
             streak = (now - last > 172800000) ? 1 : (streak % 7) + 1;
             let reward = streak === 7 ? 50000 : streak * 5000;
-            score += reward; localStorage.setItem('sb_last', now); localStorage.setItem('sb_streak', streak);
-            updateDisplay(); tg.showAlert(`Klaim Hari ke-${streak}: +${reward.toLocaleString()} Koin!`);
+
+            score += reward;
+            localStorage.setItem('sb_last', now);
+            localStorage.setItem('sb_streak', streak);
+            
+            updateDisplay();
+            tg.showAlert(`✅ Klaim Hari ke-${streak} Berhasil! +${reward.toLocaleString()} Koin ditambahkan.`);
+        }
+
+        // RODA KEBERUNTUNGAN
+        let isSpinning = false;
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        const prizes = ["10K", "50K", "ZONK", "100K", "ENERGI", "JACKPOT"];
+        const colors = ["#003566", "#001d3d", "#003566", "#001d3d", "#003566", "#ffc300"];
+
+        function drawWheel() {
+            if (!canvas) return;
+            const arc = (2 * Math.PI) / prizes.length;
+            ctx.clearRect(0, 0, 300, 300);
+            prizes.forEach((p, i) => {
+                ctx.beginPath();
+                ctx.fillStyle = colors[i];
+                ctx.moveTo(150, 150);
+                ctx.arc(150, 150, 150, i * arc, (i + 1) * arc);
+                ctx.fill();
+                ctx.save();
+                ctx.translate(150, 150);
+                ctx.rotate(i * arc + arc / 2);
+                ctx.fillStyle = "white";
+                ctx.font = "bold 16px Arial";
+                ctx.textAlign = "right";
+                ctx.fillText(p, 130, 10);
+                ctx.restore();
+            });
+        }
+        drawWheel();
+
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+            const extraSpins = 5;
+            const randomDegree = Math.floor(Math.random() * 360);
+            const totalRotation = (extraSpins * 360) + randomDegree;
+            canvas.style.transition = "transform 4s cubic-bezier(0.17, 0.67, 0.83, 0.67)";
+            canvas.style.transform = `rotate(${totalRotation}deg)`;
+            setTimeout(() => {
+                isSpinning = false;
+                const actualDegree = randomDegree % 360;
+                const winIndex = Math.floor(((360 - actualDegree) / 60) % prizes.length);
+                const prize = prizes[winIndex];
+                tg.showAlert("Selamat! Hadiah Anda: " + prize);
+                if (prize === "10K") score += 10000;
+                else if (prize === "50K") score += 50000;
+                else if (prize === "100K") score += 100000;
+                else if (prize === "JACKPOT") score += 500000;
+                else if (prize === "ENERGI") energy = maxEnergy;
+                updateDisplay();
+                canvas.style.transition = "none";
+                canvas.style.transform = `rotate(${actualDegree}deg)`;
+            }, 4000);
+        }
+
+        // FUNGSI LAINNYA
+        function inviteFriend() { tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/swiftbit_quest_bot&text=Ayo main SwiftBit!`); }
+        function doSocialTask(l, r) { tg.openLink(l); setTimeout(() => { score += r; updateDisplay(); tg.showAlert("Bonus +" + r + "!"); }, 5000); }
+        function buyUpgrade() { if (score >= upgradeCost) { score -= upgradeCost; tapPower++; upgradeCost *= 2; updateDisplay(); } }
+        function buyEnergyUpgrade() { if (score >= energyCost) { score -= energyCost; maxEnergy += 50; energyCost *= 2; updateDisplay(); } }
+        function requestWD(m) { tg.showAlert("Hubungi @Hamkaharahap untuk proses WD " + m); }
+        function activateAutoBot() { tg.openLink("https://otieu.com/4/10374339"); let l=60; let b=setInterval(()=>{ if(l>0 && energy>=tapPower){ score+=tapPower; energy-=tapPower; updateDisplay(); l--; }else clearInterval(b); },1000); }
+        
+        function payWithStars(item, price) {
+            tg.showConfirm(`Beli ${item} seharga ${price} Bintang?`, (ok) => {
+                if (ok) tg.showAlert("Invoice dikirim ke bot Anda!");
+            });
         }
 
         function connectWallet() {
             const btn = document.getElementById('connect-btn');
-            btn.innerText = "⏳ Menghubungkan...";
+            btn.innerText = "⏳ Mengikat...";
             setTimeout(() => {
-                const addr = "0x71C..." + Math.floor(Math.random()*1000);
-                btn.innerText = "✅ " + addr; btn.style.background = "#00ff00";
-                localStorage.setItem('sb_wallet', addr);
+                const addr = "0x" + Math.random().toString(16).slice(2, 10).toUpperCase();
+                btn.innerText = "✅ " + addr;
+                btn.style.background = "#00ff00";
             }, 1500);
         }
-// TEMPELKAN DI SINI (Baris 232)
-function payWithStars(item, price) {
-    tg.showConfirm(`Beli ${item} seharga ${price} Stars?`, (confirmed) => {
-        if (confirmed) {
-            tg.openInvoice(`https://t.me/swiftbit_quest_bot?start=buy_${item}`, (status) => {
-                if (status === 'paid') {
-                    if(item === 'multiTap') tapPower++;
-                    if(item === 'maxEnergy') maxEnergy += 50;
-                    updateDisplay();
-                    tg.showAlert("Pembayaran Berhasil! Booster Aktif.");
-                }
-            });
+
+        function updateLeaderboard() {
+            const list = document.getElementById('leaderboard-list');
+            list.innerHTML = `<div class="rank-item"><span>🥇 1. Sultan_Cuan</span><b>25,0 juta</b></div>
+                             <div class="rank-item"><span>🥈 2. Raja_Tap</span><b>18,5 juta</b></div>
+                             <div class="rank-item" style="border:1px solid gold; margin-top:10px;"><span>⭐ Anda</span><b>${score.toLocaleString()}</b></div>`;
         }
-    });
-}
-        // Inisialisasi variabel di luar agar bisa diakses semua fungsi
-let isSpinning = false;
-const canvas = document.getElementById('wheelCanvas');
-const ctx = canvas.getContext('2d');
-const prizes = ["10K", "50K", "ZONK", "100K", "ENERGY", "JACKPOT"];
-const colors = ["#003566", "#001d3d", "#003566", "#001d3d", "#003566", "#ffc300"];
 
-function drawWheel() {
-    if (!canvas) return;
-    const arc = (2 * Math.PI) / prizes.length;
-    ctx.clearRect(0, 0, 300, 300); // Bersihkan canvas sebelum gambar ulang
-    prizes.forEach((prize, i) => {
-        ctx.beginPath();
-        ctx.fillStyle = colors[i];
-        ctx.moveTo(150, 150);
-        ctx.arc(150, 150, 150, i * arc, (i + 1) * arc);
-        ctx.fill();
-        ctx.save();
-        ctx.translate(150, 150);
-        ctx.rotate(i * arc + arc / 2);
-        ctx.fillStyle = "white";
-        ctx.font = "bold 16px Arial";
-        ctx.textAlign = "right";
-        ctx.fillText(prize, 130, 10);
-        ctx.restore();
-    });
-}
-
-// Panggil fungsi gambar segera setelah skrip dimuat
-drawWheel();
-
-function spinWheel() {
-    if (isSpinning) return;
-    isSpinning = true;
-    
-    let currentRotation = 0;
-    const extraSpins = 5; // Putaran tambahan agar terlihat cepat
-    const randomDegree = Math.floor(Math.random() * 360);
-    const totalRotation = (extraSpins * 360) + randomDegree;
-    
-    canvas.style.transition = "transform 4s cubic-bezier(0.17, 0.67, 0.83, 0.67)";
-    canvas.style.transform = `rotate(${totalRotation}deg)`;
-    
-    setTimeout(() => {
-        isSpinning = false;
-        // Hitung hasil berdasarkan rotasi terakhir
-        const actualDegree = randomDegree % 360;
-        const winIndex = Math.floor(((360 - actualDegree) / 60) % prizes.length);
-        const reward = prizes[winIndex];
-        
-        tg.showAlert("Selamat! Hadiah Anda: " + reward);
-        
-        if (reward === "10K") score += 10000;
-        else if (reward === "50K") score += 50000;
-        else if (reward === "100K") score += 100000;
-        else if (reward === "JACKPOT") score += 500000;
-        else if (reward === "ENERGY") energy = maxEnergy;
-
-        updateDisplay();
-        canvas.style.transition = "none"; // Reset transisi
-        canvas.style.transform = `rotate(${actualDegree}deg)`;
-    }, 4000); // Sesuai durasi transisi 4 detik
-}
-        function doSocialTask(l, r) { tg.openLink(l); setTimeout(() => { score += r; updateDisplay(); tg.showAlert("Bonus +" + r + "!"); }, 5000); }
-        function buyUpgrade() { if (score >= upgradeCost) { score -= upgradeCost; tapPower++; upgradeCost *= 2; updateDisplay(); } }
-        function buyEnergyUpgrade() { if (score >= energyCost) { score -= energyCost; maxEnergy += 50; energyCost *= 2; updateDisplay(); } }
-        function claimDaily() { score += 10000; updateDisplay(); tg.showAlert("Bonus Harian!"); }
-        function requestWD(m) { tg.showAlert("Hubungi @Hamkaharahap untuk proses WD " + m); }
-        function activateAutoBot() { tg.openLink("https://otieu.com/4/10374339"); let l=60; let b=setInterval(()=>{ if(l>0 && energy>=tapPower){ score+=tapPower; energy-=tapPower; updateDisplay(); l--; }else clearInterval(b); },1000); }
-
-        window.onload = () => {
-            updateDisplay();
-            const w = localStorage.getItem('sb_wallet');
-            if(w) { const b = document.getElementById('connect-btn'); b.innerText = "✅ " + w; b.style.background = "#00ff00"; }
-        };
+        window.onload = () => { updateDisplay(); };
     </script>
+
     <script>
-function createCoin() {
-    const coin = document.createElement('div');
-    coin.innerHTML = '💰';
-    coin.style.position = 'fixed';
-    coin.style.top = '-50px';
-    coin.style.left = Math.random() * window.innerWidth + 'px';
-    coin.style.fontSize = '24px';
-    coin.style.zIndex = '999';
-    coin.style.transition = 'transform 3s linear';
-    document.body.appendChild(coin);
-    setTimeout(() => {
-        coin.style.transform = `translateY(${window.innerHeight + 100}px) rotate(${Math.random() * 360}deg)`;
-    }, 100);
-    setTimeout(() => { coin.remove(); }, 4000);
-}
-setInterval(createCoin, 500);
-</script>
+        function createCoin() {
+            const coin = document.createElement('div');
+            coin.innerHTML = '💰';
+            coin.style.position = 'fixed';
+            coin.style.top = '-50px';
+            coin.style.left = Math.random() * window.innerWidth + 'px';
+            coin.style.fontSize = '24px';
+            coin.style.zIndex = '999';
+            coin.style.transition = 'transform 3s linear';
+            document.body.appendChild(coin);
+            setTimeout(() => {
+                coin.style.transform = `translateY(${window.innerHeight + 100}px) rotate(${Math.random() * 360}deg)`;
+            }, 100);
+            setTimeout(() => { coin.remove(); }, 4000);
+        }
+        setInterval(createCoin, 1500);
+    </script>
 </body>
 </html>

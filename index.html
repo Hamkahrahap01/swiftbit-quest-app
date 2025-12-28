@@ -239,12 +239,19 @@
         }
 
     function claimDaily() {
-            const now = new Date().getTime();
-            const last = parseInt(localStorage.getItem('sb_last')) || 0;
-            if (now - last < 86400000) { tg.showAlert("Kembali besok!"); return; }
-            score += 10000; localStorage.setItem('sb_last', now);
-            updateDisplay(); tg.showAlert("Bonus Harian +10.000!");
-        }
+    const now = new Date().getTime();
+    const last = parseInt(localStorage.getItem('sb_last')) || 0;
+
+    if (now - last < 86400000) { 
+        tg.showAlert("Kembali besok!"); 
+    } else {
+        // HANYA BERTAMBAH JIKA SUDAH LEWAT 24 JAM
+        score += 10000;
+        localStorage.setItem('sb_last', now);
+        updateDisplay();
+        tg.showAlert("Bonus Harian +10.000 Berhasil!");
+    }
+}
 
         function connectWallet() {
             const btn = document.getElementById('connect-btn');

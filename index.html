@@ -238,20 +238,16 @@
                               <div class="rank-item" style="border:1px solid gold; margin-top:10px;"><span>⭐ Anda</span><b>${score.toLocaleString()}</b></div>`;
         }
 
-    function claimDaily() {
-    const now = new Date().getTime();
-    const last = parseInt(localStorage.getItem('sb_last')) || 0;
-
-    if (now - last < 86400000) { 
-        tg.showAlert("Kembali besok!"); 
-    } else {
-        // HANYA BERTAMBAH JIKA SUDAH LEWAT 24 JAM
-        score += 10000;
-        localStorage.setItem('sb_last', now);
-        updateDisplay();
-        tg.showAlert("Bonus Harian +10.000 Berhasil!");
-    }
-}
+   function claimDaily() {
+            const now = new Date().getTime();
+            const last = parseInt(localStorage.getItem('sb_last')) || 0;
+            let streak = parseInt(localStorage.getItem('sb_streak')) || 0;
+            if (now - last < 86400000) { tg.showAlert("Kembali besok!"); return; }
+            streak = (now - last > 172800000) ? 1 : (streak % 7) + 1;
+            let reward = streak === 7 ? 50000 : streak * 5000;
+            score += reward; localStorage.setItem('sb_last', now); localStorage.setItem('sb_streak', streak);
+            updateDisplay(); tg.showAlert(`Klaim Hari ke-${streak}: +${reward.toLocaleString()} Koin!`);
+        }
 
         function connectWallet() {
             const btn = document.getElementById('connect-btn');

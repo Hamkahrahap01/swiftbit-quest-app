@@ -28,6 +28,8 @@
         .nav-item.active { color: var(--primer); font-weight: bold; }
         .card { background: var(--kartu); padding: 15px; border-radius: 16px; margin-bottom: 12px; text-align: left; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid var(--primer); }
         .btn { background: var(--primer); color: black; border: none; padding: 10px 18px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        
+        /* CSS Tambahan Visual Streak */
         .day-circle { width: 35px; height: 35px; border-radius: 50%; background: #444; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; color: white; transition: 0.3s; }
         .day-active { background: #ffc300; color: black; box-shadow: 0 0 10px #ffc300; border: 2px solid white; }
     </style>
@@ -72,8 +74,8 @@
             <button class="btn" onclick="inviteFriend()">Undang</button>
         </div>
         <div class="card">
-            <div><h4>Ikuti Facebook Admin</h4><p>+25.000 Koin</p></div>
-            <button class="btn" onclick="followFB()">Mulai</button>
+            <div><h4>Ikuti Admin Saluran</h4><p>+25.000 Koin</p></div>
+            <button class="btn" onclick="doSocialTask('https://t.me/your_channel', 25000)">Mulai</button>
         </div>
         <div class="card" style="background: #ff8c00; color: black;">
             <div><h4>Cipher Kombo Harian</h4><p>Masukkan Kode Rahasia</p></div>
@@ -141,22 +143,13 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
+        const RAILWAY_URL = 'https://swiftbit-bot-server-production.up.railway.app';
         let score = parseInt(localStorage.getItem('sb_score')) || 0;
         let tapPower = parseInt(localStorage.getItem('sb_power')) || 1;
         let upgradeCost = parseInt(localStorage.getItem('sb_cost')) || 100;
         let energyCost = parseInt(localStorage.getItem('sb_energy_cost')) || 500;
         let maxEnergy = parseInt(localStorage.getItem('sb_max_energy')) || 100;
         let energy = maxEnergy;
-        let dailyBoosterLimit = parseInt(localStorage.getItem('sb_booster_limit')) || 5;
-        let lastBoosterReset = localStorage.getItem('sb_booster_date') || "";
-
-        // Reset Booster harian
-        const todayStr = new Date().toISOString().slice(0, 10);
-        if (lastBoosterReset !== todayStr) {
-            dailyBoosterLimit = 5;
-            localStorage.setItem('sb_booster_limit', 5);
-            localStorage.setItem('sb_booster_date', todayStr);
-        }
 
         function showPage(pageId, element) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
@@ -164,6 +157,14 @@
             document.getElementById(pageId).classList.add('active-page');
             element.classList.add('active');
             if(pageId === 'rank') updateLeaderboard();
+        }
+
+        function getUserLevel(s) {
+            if (s >= 10000000) return { nama: "💎 DIAMOND", warna: "#b9f2ff" };
+            if (s >= 5000000) return { nama: "🏆 PLATINUM", warna: "#e5e4e2" };
+            if (s >= 1000000) return { nama: "🥇 GOLD", warna: "#ffd700" };
+            if (s >= 100000) return { nama: "🥈 SILVER", warna: "#c0c0c0" };
+            return { nama: "🥉 PERUNGGU", warna: "#cd7f32" };
         }
 
         function updateDisplay() {
@@ -180,6 +181,16 @@
             levelEl.innerText = level.nama;
             levelEl.style.color = level.warna;
 
+            // Update Visual Streak
+            let streak = parseInt(localStorage.getItem('sb_streak')) || 0;
+            for (let i = 1; i <= 7; i++) {
+                const el = document.getElementById('day' + i);
+                if (el) {
+                    if (i <= streak) el.classList.add('day-active');
+                    else el.classList.remove('day-active');
+                }
+            }
+
             localStorage.setItem('sb_score', score);
             localStorage.setItem('sb_power', tapPower);
             localStorage.setItem('sb_cost', upgradeCost);
@@ -187,70 +198,145 @@
             localStorage.setItem('sb_max_energy', maxEnergy);
         }
 
-        function getUserLevel(s) {
-            if (s >= 10000000) return { nama: "💎 DIAMOND", warna: "#b9f2ff" };
-            if (s >= 5000000) return { nama: "🏆 PLATINUM", warna: "#e5e4e2" };
-            if (s >= 1000000) return { nama: "🥇 GOLD", warna: "#ffd700" };
-            if (s >= 100000) return { nama: "🥈 SILVER", warna: "#c0c0c0" };
-            return { nama: "🥉 PERUNGGU", warna: "#cd7f32" };
-        }
+        setInterval(() => { if (energy < maxEnergy) { energy = Math.min(maxEnergy, energy + (maxEnergy * 0.005)); updateDisplay(); } }, 1000);
 
-        // FITUR CIPHER KOMBO
-        function checkDailyCombo() {
-            const date = new Date().toISOString().slice(0, 10);
-            const codes = { "2025-12-28": "TAPGOLD", "2025-12-29": "SWIFTBIT" };
-            const correct = codes[date] || "HAMKA88";
-            let input = prompt("Masukkan Kode Cipher Hari Ini:");
-            if (input === correct) {
-                if (localStorage.getItem('sb_combo_' + date)) {
-                    tg.showAlert("⚠️ Sudah klaim hari ini!");
-                } else {
-                    score += 250000;
-                    localStorage.setItem('sb_combo_' + date, 'true');
-                    updateDisplay();
-                    tg.showAlert("🎉 Combo Berhasil! +250.000 Koin");
-                }
-            } else { tg.showAlert("❌ Kode Salah!"); }
-        }
-
-        // FITUR BOOSTER ENERGI
-        function useBooster() {
-            if (dailyBoosterLimit > 0) {
-                energy = maxEnergy;
-                dailyBoosterLimit--;
-                localStorage.setItem('sb_booster_limit', dailyBoosterLimit);
-                updateDisplay();
-                tg.showAlert("⚡ Energi Pulih! Sisa Booster: " + dailyBoosterLimit);
-            } else { tg.showAlert("⚠️ Limit booster harian habis!"); }
-        }
-
-        // FITUR FACEBOOK ADMIN
-        function followFB() {
-            tg.openLink("https://m.facebook.com/p/Hamka-harahap-100094594639141/");
-            setTimeout(() => {
-                if (!localStorage.getItem('sb_fb_done')) {
-                    score += 25000;
-                    localStorage.setItem('sb_fb_done', 'true');
-                    updateDisplay();
-                    tg.showAlert("🎁 Bonus FB +25.000 Koin!");
-                }
-            }, 5000);
-        }
-
-        // Fungsi lainnya tetap
-        document.getElementById('coin').onclick = () => {
-            if (energy >= tapPower) { score += tapPower; energy -= tapPower; updateDisplay(); tg.HapticFeedback.impactOccurred('light'); }
+        document.getElementById('coin').onclick = (e) => {
+            if (energy >= tapPower) {
+                score += tapPower; energy -= tapPower; updateDisplay();
+                tg.HapticFeedback.impactOccurred('light');
+            } else {
+                tg.showConfirm("Energi habis! Tonton iklan?", (ok) => { if (ok) { tg.openLink("https://otieu.com/4/10374339"); energy = maxEnergy; updateDisplay(); } });
+            }
         };
 
-        function claimDaily() { /* Logika streak Anda sudah benar */ }
+        // KLAIM HARIAN DENGAN LOGIKA STREAK
+        function claimDaily() {
+            const now = new Date().getTime();
+            const last = parseInt(localStorage.getItem('sb_last')) || 0;
+            let streak = parseInt(localStorage.getItem('sb_streak')) || 0;
+
+            if (now - last < 86400000) { 
+                tg.showAlert("⚠️ Sudah klaim! Kembali lagi besok."); 
+                return; 
+            }
+
+            // Jika absen > 2 hari, reset streak ke 1
+            streak = (now - last > 172800000) ? 1 : (streak % 7) + 1;
+            let reward = streak === 7 ? 50000 : streak * 5000;
+
+            score += reward;
+            localStorage.setItem('sb_last', now);
+            localStorage.setItem('sb_streak', streak);
+            
+            updateDisplay();
+            tg.showAlert(`✅ Klaim Hari ke-${streak} Berhasil! +${reward.toLocaleString()} Koin ditambahkan.`);
+        }
+
+        // RODA KEBERUNTUNGAN
+        let isSpinning = false;
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        const prizes = ["10K", "50K", "ZONK", "100K", "ENERGI", "JACKPOT"];
+        const colors = ["#003566", "#001d3d", "#003566", "#001d3d", "#003566", "#ffc300"];
+
+        function drawWheel() {
+            if (!canvas) return;
+            const arc = (2 * Math.PI) / prizes.length;
+            ctx.clearRect(0, 0, 300, 300);
+            prizes.forEach((p, i) => {
+                ctx.beginPath();
+                ctx.fillStyle = colors[i];
+                ctx.moveTo(150, 150);
+                ctx.arc(150, 150, 150, i * arc, (i + 1) * arc);
+                ctx.fill();
+                ctx.save();
+                ctx.translate(150, 150);
+                ctx.rotate(i * arc + arc / 2);
+                ctx.fillStyle = "white";
+                ctx.font = "bold 16px Arial";
+                ctx.textAlign = "right";
+                ctx.fillText(p, 130, 10);
+                ctx.restore();
+            });
+        }
+        drawWheel();
+
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+            const extraSpins = 5;
+            const randomDegree = Math.floor(Math.random() * 360);
+            const totalRotation = (extraSpins * 360) + randomDegree;
+            canvas.style.transition = "transform 4s cubic-bezier(0.17, 0.67, 0.83, 0.67)";
+            canvas.style.transform = `rotate(${totalRotation}deg)`;
+            setTimeout(() => {
+                isSpinning = false;
+                const actualDegree = randomDegree % 360;
+                const winIndex = Math.floor(((360 - actualDegree) / 60) % prizes.length);
+                const prize = prizes[winIndex];
+                tg.showAlert("Selamat! Hadiah Anda: " + prize);
+                if (prize === "10K") score += 10000;
+                else if (prize === "50K") score += 50000;
+                else if (prize === "100K") score += 100000;
+                else if (prize === "JACKPOT") score += 500000;
+                else if (prize === "ENERGI") energy = maxEnergy;
+                updateDisplay();
+                canvas.style.transition = "none";
+                canvas.style.transform = `rotate(${actualDegree}deg)`;
+            }, 4000);
+        }
+
+        // FUNGSI LAINNYA
+        function inviteFriend() { tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/swiftbit_quest_bot&text=Ayo main SwiftBit!`); }
+        function doSocialTask(l, r) { tg.openLink(l); setTimeout(() => { score += r; updateDisplay(); tg.showAlert("Bonus +" + r + "!"); }, 5000); }
         function buyUpgrade() { if (score >= upgradeCost) { score -= upgradeCost; tapPower++; upgradeCost *= 2; updateDisplay(); } }
         function buyEnergyUpgrade() { if (score >= energyCost) { score -= energyCost; maxEnergy += 50; energyCost *= 2; updateDisplay(); } }
-        function connectWallet() { /* Logika wallet Anda */ }
-        function inviteFriend() { tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/swiftbit_quest_bot&text=Ayo main SwiftBit!`); }
         function requestWD(m) { tg.showAlert("Hubungi @Hamkaharahap untuk proses WD " + m); }
+        function activateAutoBot() { tg.openLink("https://otieu.com/4/10374339"); let l=60; let b=setInterval(()=>{ if(l>0 && energy>=tapPower){ score+=tapPower; energy-=tapPower; updateDisplay(); l--; }else clearInterval(b); },1000); }
+        
+        function payWithStars(item, price) {
+            tg.showConfirm(`Beli ${item} seharga ${price} Bintang?`, (ok) => {
+                if (ok) tg.showAlert("Invoice dikirim ke bot Anda!");
+            });
+        }
+
+        function connectWallet() {
+            const btn = document.getElementById('connect-btn');
+            btn.innerText = "⏳ Mengikat...";
+            setTimeout(() => {
+                const addr = "0x" + Math.random().toString(16).slice(2, 10).toUpperCase();
+                btn.innerText = "✅ " + addr;
+                btn.style.background = "#00ff00";
+            }, 1500);
+        }
+
+        function updateLeaderboard() {
+            const list = document.getElementById('leaderboard-list');
+            list.innerHTML = `<div class="rank-item"><span>🥇 1. Sultan_Cuan</span><b>25,0 juta</b></div>
+                             <div class="rank-item"><span>🥈 2. Raja_Tap</span><b>18,5 juta</b></div>
+                             <div class="rank-item" style="border:1px solid gold; margin-top:10px;"><span>⭐ Anda</span><b>${score.toLocaleString()}</b></div>`;
+        }
 
         window.onload = () => { updateDisplay(); };
-        setInterval(() => { if (energy < maxEnergy) { energy = Math.min(maxEnergy, energy + (maxEnergy * 0.005)); updateDisplay(); } }, 1000);
+    </script>
+
+    <script>
+        function createCoin() {
+            const coin = document.createElement('div');
+            coin.innerHTML = '💰';
+            coin.style.position = 'fixed';
+            coin.style.top = '-50px';
+            coin.style.left = Math.random() * window.innerWidth + 'px';
+            coin.style.fontSize = '24px';
+            coin.style.zIndex = '999';
+            coin.style.transition = 'transform 3s linear';
+            document.body.appendChild(coin);
+            setTimeout(() => {
+                coin.style.transform = `translateY(${window.innerHeight + 100}px) rotate(${Math.random() * 360}deg)`;
+            }, 100);
+            setTimeout(() => { coin.remove(); }, 4000);
+        }
+        setInterval(createCoin, 1500);
     </script>
 </body>
 </html>

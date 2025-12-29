@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <script src="https://adsgram.ai/sdk/v1/adsgram-sdk.js"></script>
     <meta name="verifikasi-situs-google" content="8xH9nGXIIgQ7PxWILkVZR1loji6_bye7MhJI3WEhh3g" />
     <script src="https://quge5.com/88/tag.min.js" data-zone="195898" async data-cfasync="false"></script>
     <meta charset="UTF-8">
@@ -130,6 +131,9 @@
     </div>
 
     <div id="nav-bar">
+        <button class="btn" style="width: 85%; margin-bottom: 15px; background: linear-gradient(to right, #ff416c, #ff4b2b); color: white;" onclick="showVideoAd()">
+    📺 TONTON IKLAN (+25.000)
+</button>
         <div class="nav-item active" onclick="showPage('home', this)"><span>🏠</span>Beranda</div>
         <div class="nav-item" onclick="showPage('tasks', this)"><span>📋</span>Tugas</div>
         <div class="nav-item" onclick="tg.openTelegramLink('https://t.me/swiftbit_community')"><span>💬</span>Obrolan</div>
@@ -143,7 +147,21 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        const RAILWAY_URL = 'https://swiftbit-bot-server-production.up.railway.app';
+    // Hubungkan ke Block ID Anda
+const AdController = window.Adsgram.init({ blockId: "20215" });
+
+function showVideoAd() {
+    AdController.show().then(() => {
+        // Hadiah jika iklan selesai ditonton
+        score += 25000; 
+        updateDisplay();
+        tg.showAlert("✅ Selamat! +25.000 Koin berhasil masuk.");
+    }).catch((result) => {
+        // Jika iklan gagal atau di-skip
+        tg.showAlert("Iklan belum tersedia atau gagal dimuat.");
+        console.error(result);
+    });
+}    const RAILWAY_URL = 'https://swiftbit-bot-server-production.up.railway.app';
         let score = parseInt(localStorage.getItem('sb_score')) || 0;
         let tapPower = parseInt(localStorage.getItem('sb_power')) || 1;
         let upgradeCost = parseInt(localStorage.getItem('sb_cost')) || 100;

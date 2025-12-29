@@ -50,23 +50,31 @@
             <div class="energy-bar"><div id="energy-inner" style="width: 100%;"></div></div>
         </div>
         <div id="streak-container" style="display: flex; justify-content: space-around; margin: 15px auto; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 10px; width: 85%;">
-            <div class="day-circle" id="day1">1</div><div class="day-circle" id="day2">2</div><div class="day-circle" id="day3">3</div><div class="day-circle" id="day4">4</div><div class="day-circle" id="day5">5</div><div class="day-circle" id="day6">6</div><div class="day-circle" id="day7">🎁</div>
+            <div class="day-circle" id="day1">1</div>
+            <div class="day-circle" id="day2">2</div>
+            <div class="day-circle" id="day3">3</div>
+            <div class="day-circle" id="day4">4</div>
+            <div class="day-circle" id="day5">5</div>
+            <div class="day-circle" id="day6">6</div>
+            <div class="day-circle" id="day7">🎁</div>
         </div>
         <button class="btn" style="width: 85%; margin-top: 10px;" onclick="claimDaily()">🎁 Klaim Bonus Harian</button>
         <button class="btn" style="width: 85%; margin-top: 10px; background: #007bff;" onclick="activateAutoBot()">🤖 Aktifkan Auto-Bot (Iklan)</button>
-        <a href="wiki.html" style="display: block; width: 85%; margin: 10px auto; padding: 10px; text-decoration: none; background: #ffc300; color: black; border-radius: 10px; font-weight: bold;">📚 Panduan Wiki</a>
+        <a href="wiki.html" style="display: block; width: 85%; margin: 10px auto; padding: 10px; text-decoration: none; background: #ffc300; color: black; border-radius: 10px; font-weight: bold;">📚 Panduan Wiki & Tips Cuan</a>
     </div>
 
     <div id="tasks" class="page">
         <h2>📋 Tugas & Referensi</h2>
         <div class="card" style="border-left: 4px solid #00ff00;"><div><h4>Undang Teman</h4><p>+50,000 Koin</p></div><button class="btn" onclick="inviteFriend()">Undang</button></div>
         <div class="card"><div><h4>Ikuti Admin Saluran</h4><p>+25.000 Koin</p></div><button class="btn" onclick="doSocialTask('https://t.me/your_channel', 25000)">Mulai</button></div>
+        <div class="card" style="background: #ff8c00; color: black;"><div><h4>Cipher Kombo Harian</h4><p>Masukkan Kode Rahasia</p></div><button class="btn" onclick="checkDailyCombo()" style="background: white;">Masukan</button></div>
     </div>
 
     <div id="withdraw" class="page">
         <h2>💸 Penarikan Saldo</h2>
         <div class="stat-box" style="margin-bottom: 20px; width: 85%; margin: auto;">Estimasi Saldo: <br><b id="money" style="font-size: 24px;">Rp 0</b></div>
         <div class="card"><div><h4>DANA / OVO</h4><p>Min. 1 Juta Koin</p></div><button class="btn" onclick="requestWD('E-Wallet')">Tukar</button></div>
+        <div class="card"><div><h4>PayPal</h4><p>Min. 5 Juta Koin</p></div><button class="btn" onclick="requestWD('PayPal')">Tukar</button></div>
     </div>
 
     <div id="rank" class="page">
@@ -75,8 +83,9 @@
 
     <div id="shop" class="page">
         <h2>🛒 Toko & Booster ⚡</h2>
-        <div class="card"><div><h4>Multi-Ketuk</h4><p>Harga: <span id="upgrade-cost">100</span></p></div><button class="btn" onclick="buyUpgrade()">Beli</button></div>
-        <div class="card"><div><h4>Energi Maks</h4><p>Harga: <span id="energy-cost">500</span></p></div><button class="btn" onclick="buyEnergyUpgrade()">Beli</button></div>
+        <div class="card"><div><h4>Multi-Ketuk</h4><p>Harga: <span id="upgrade-cost">100</span></p></div><div style="display: flex; flex-direction: column; gap: 5px;"><button class="btn" onclick="buyUpgrade()">Beli</button><button class="btn" style="background: #0088cc; font-size: 0.8em; padding: 5px 10px;" onclick="payWithStars('multiTap', 50)">⭐️ 50 Bintang</button></div></div>
+        <div class="card"><div><h4>Energi Maks</h4><p>Harga: <span id="energy-cost">500</span></p></div><div style="display: flex; flex-direction: column; gap: 5px;"><button class="btn" onclick="buyEnergyUpgrade()">Beli</button><button class="btn" style="background: #0088cc; font-size: 0.8em; padding: 5px 10px;" onclick="payWithStars('maxEnergy', 100)">⭐️ 100 Bintang</button></div></div>
+        <div class="card" style="border-left: 4px solid #ff0054;"><div><h4>Penguat Tangki Penuh</h4><p>Isi Instan Energi (5x/Hari)</p></div><button class="btn" style="background: #ff0054; color: white;" onclick="useBooster()">Gunakan</button></div>
     </div>
 
     <div id="roda" class="page">
@@ -85,12 +94,16 @@
             <div id="wheel-pointer" style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); z-index: 10; font-size: 30px;">🔻</div>
             <canvas id="wheelCanvas" width="300" height="300" style="border-radius: 50%; border: 5px solid #ffc300;"></canvas>
         </div>
-        <button class="btn" onclick="spinWheel()" id="spin-btn" style="width: 200px;">PUTAR GRATIS (1x)</button>
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+            <button class="btn" onclick="spinWheel()" id="spin-btn" style="width: 200px; background: #ffc300; color: black;">PUTAR GRATIS (1x)</button>
+            <button class="btn" onclick="payWithStars('extraSpin', 20)" style="width: 200px; background: #0088cc;">⭐️ Putar Lagi (20 Bintang)</button>
+        </div>
     </div>
 
     <div id="nav-bar">
         <div class="nav-item active" onclick="showPage('home', this)"><span>🏠</span>Beranda</div>
         <div class="nav-item" onclick="showPage('tasks', this)"><span>📋</span>Tugas</div>
+        <div class="nav-item" onclick="tg.openTelegramLink('https://t.me/swiftbit_community')"><span>💬</span>Obrolan</div>
         <div class="nav-item" onclick="showPage('withdraw', this)"><span>💸</span>WD</div>
         <div class="nav-item" onclick="showPage('rank', this)"><span>🏆</span>Peringkat</div>
         <div class="nav-item" onclick="showPage('shop', this)"><span>🛒</span>Belanja</div>
@@ -106,20 +119,20 @@
         let maxEnergy = parseInt(localStorage.getItem('sb_max_energy')) || 100;
         let energy = maxEnergy;
 
-        function showPage(pId, el) {
+        function showPage(pageId, element) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            document.getElementById(pId).classList.add('active-page');
-            el.classList.add('active');
-            if(pId === 'rank') updateLeaderboard();
+            document.getElementById(pageId).classList.add('active-page');
+            element.classList.add('active');
+            if(pageId === 'rank') updateLeaderboard();
         }
 
         function updateDisplay() {
             document.getElementById('score').innerText = score.toLocaleString();
-            document.getElementById('money').innerText = "Rp " + Math.floor(score/100).toLocaleString();
+            document.getElementById('money').innerText = "Rp " + Math.floor(score / 100).toLocaleString();
             document.getElementById('energy-text').innerText = Math.floor(energy);
             document.getElementById('max-energy-text').innerText = maxEnergy;
-            document.getElementById('energy-inner').style.width = (energy/maxEnergy*100) + "%";
+            document.getElementById('energy-inner').style.width = (energy / maxEnergy * 100) + "%";
             document.getElementById('upgrade-cost').innerText = upgradeCost.toLocaleString();
             document.getElementById('energy-cost').innerText = energyCost.toLocaleString();
             localStorage.setItem('sb_score', score);
@@ -129,35 +142,49 @@
         }
 
         document.getElementById('coin').onclick = () => {
-            if(energy >= tapPower) { score += tapPower; energy -= tapPower; updateDisplay(); tg.HapticFeedback.impactOccurred('light'); }
+            if (energy >= tapPower) { score += tapPower; energy -= tapPower; updateDisplay(); tg.HapticFeedback.impactOccurred('light'); }
         };
 
-        function buyUpgrade() { if(score >= upgradeCost){ score -= upgradeCost; tapPower++; upgradeCost *= 2; updateDisplay(); } }
-        function buyEnergyUpgrade() { if(score >= energyCost){ score -= energyCost; maxEnergy += 50; energyCost *= 2; updateDisplay(); } }
+        function claimDaily() { score += 5000; updateDisplay(); tg.showAlert("Bonus Diklaim!"); }
         function activateAutoBot() { tg.openLink("https://otieu.com/4/10374339"); }
         function inviteFriend() { tg.openTelegramLink("https://t.me/share/url?url=https://t.me/swiftbit_quest_bot"); }
+        function buyUpgrade() { if(score >= upgradeCost){ score -= upgradeCost; tapPower++; upgradeCost *= 2; updateDisplay(); } }
+        function buyEnergyUpgrade() { if(score >= energyCost){ score -= energyCost; maxEnergy += 50; energyCost *= 2; updateDisplay(); } }
         function requestWD(m) { tg.showAlert("Hubungi @Hamkaharahap"); }
-        function claimDaily() { score += 5000; updateDisplay(); tg.showAlert("Klaim Berhasil!"); }
-        
-        // Roda
-        const canvas = document.getElementById('wheelCanvas');
-        const ctx = canvas.getContext('2d');
-        const prizes = ["10K", "50K", "ZONK", "100K", "ENERGI", "JACKPOT"];
-        function drawWheel() {
-            const arc = Math.PI / 3;
-            prizes.forEach((p, i) => {
-                ctx.beginPath(); ctx.fillStyle = i%2==0 ? "#003566":"#001d3d";
-                ctx.moveTo(150,150); ctx.arc(150,150,150,i*arc,(i+1)*arc); ctx.fill();
-            });
-        }
-        function spinWheel() { tg.showAlert("Selamat! Anda dapat hadiah!"); score+=10000; updateDisplay(); }
-        
-        function updateLeaderboard() {
-            document.getElementById('leaderboard-list').innerHTML = `<div class="card">🥇 Sultan_Bit: 10M</div><div class="card">⭐ Anda: ${score.toLocaleString()}</div>`;
-        }
+        function updateLeaderboard() { document.getElementById('leaderboard-list').innerHTML = `<div class="card">🥇 Sultan_Bit: 10M</div><div class="card">⭐ Anda: ${score.toLocaleString()}</div>`; }
+        function spinWheel() { tg.showAlert("Roda Berputar!"); }
+        function connectWallet() { tg.showAlert("Menghubungkan..."); }
 
-        window.onload = () => { drawWheel(); updateDisplay(); };
-        setInterval(() => { if(energy < maxEnergy){ energy++; updateDisplay(); } }, 2000);
+        window.onload = () => { updateDisplay(); };
+        setInterval(() => { if (energy < maxEnergy) { energy++; updateDisplay(); } }, 2000);
     </script>
+
+    <script>
+        function createCoin() {
+            const coin = document.createElement('div'); coin.innerHTML = '💰';
+            coin.style.position = 'fixed'; coin.style.top = '-50px';
+            coin.style.left = Math.random() * window.innerWidth + 'px';
+            coin.style.fontSize = '24px'; coin.style.zIndex = '999';
+            coin.style.transition = 'transform 3s linear';
+            document.body.appendChild(coin);
+            setTimeout(() => { coin.style.transform = `translateY(${window.innerHeight + 100}px)`; }, 100);
+            setTimeout(() => { coin.remove(); }, 4000);
+        }
+        setInterval(createCoin, 1500);
+    </script>
+
+    <div id="premium-subscriber-section" style="background: linear-gradient(135deg, #1a1a2e, #16213e); border: 2px solid #ffd700; border-radius: 15px; padding: 20px; text-align: center; margin: 15px;">
+        <div id="locked-content">
+            <h3 style="color: #ffd700;">🔐 KONTEN VIP TERKUNCI</h3>
+            <button onclick="tg.showAlert('Hubungi Bot!')" style="background: gold; color: black; font-weight: bold; padding: 10px 20px; border-radius: 50px; border: none;">Buka dengan 50 Stars ⭐️</button>
+        </div>
+    </div>
+
+    <div id="monetagModal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8);">
+        <div style="background: #1a1a2e; margin: 15% auto; padding: 25px; border: 2px solid #00d4ff; width: 80%; text-align: center; border-radius: 20px;">
+            <h2 style="color: #ffd700;">🎁 Bonus Spesial!</h2>
+            <a href="https://monetag.com/?ref_id=zOKe" target="_blank" onclick="document.getElementById('monetagModal').style.display='none'" style="display: block; padding: 15px; background: #00d4ff; color: #000; font-weight: bold; border-radius: 10px; text-decoration: none;">AMBIL BONUS SEKARANG</a>
+        </div>
+    </div>
 </body>
 </html>

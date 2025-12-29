@@ -52,7 +52,9 @@
             <p>⚡ Energi: <span id="energy-text">100</span>/<span id="max-energy-text">100</span></p>
             <div class="energy-bar"><div id="energy-inner" style="width: 100%;"></div></div>
         </div>
-
+<button class="btn" style="width: 85%; margin-bottom: 15px; background: linear-gradient(to right, #ff416c, #ff4b2b); color: white;" onclick="showVideoAd()">
+    📺 TONTON IKLAN (+25.000)
+</button>
         <div id="streak-container" style="display: flex; justify-content: space-around; margin: 15px auto; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 10px; width: 85%;">
             <div class="day-circle" id="day1">1</div>
             <div class="day-circle" id="day2">2</div>
@@ -131,9 +133,6 @@
     </div>
 
     <div id="nav-bar">
-        <button class="btn" style="width: 85%; margin-bottom: 15px; background: linear-gradient(to right, #ff416c, #ff4b2b); color: white;" onclick="showVideoAd()">
-    📺 TONTON IKLAN (+25.000)
-</button>
         <div class="nav-item active" onclick="showPage('home', this)"><span>🏠</span>Beranda</div>
         <div class="nav-item" onclick="showPage('tasks', this)"><span>📋</span>Tugas</div>
         <div class="nav-item" onclick="tg.openTelegramLink('https://t.me/swiftbit_community')"><span>💬</span>Obrolan</div>
